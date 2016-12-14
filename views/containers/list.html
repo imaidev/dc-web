@@ -1,0 +1,47 @@
+---
+layout: home
+title: Containers
+---
+<script type="text/javascript" src="/dc-web/skins/js/docker/api/container.js"></script>
+<script type="text/javascript" src="list.js"></script>
+  <!-- page title -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="page-header">
+        <h3>
+          Containers <small></small>
+        </h3>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="captions">
+            <div class="checkbox">
+              <label>
+                <input class="selector selector-all" type="checkbox">Select All
+              </label>
+            </div>
+          </div>
+          <div class="actions">
+            <div class="btn-group">
+              <button class="btn btn-default dropdown-toggle" id="actions" type="button" data-toggle="dropdown">Actions
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu actions" role="menu" aria-labelledby="actions">
+                <li><a href="#" class="container-action container-action-restart">Restart</a></li>
+                <li><a href="#" class="container-action container-action-terminate">Terminate</a></li>
+              </ul>
+            </div>
+            <button class="btn btn-default btn-info container-action container-action-start">Start</button>
+            <button class="btn btn-default btn-info container-action container-action-stop">Stop</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <ul class="list-group" id="containerList">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

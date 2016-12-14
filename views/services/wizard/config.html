@@ -1,0 +1,182 @@
+---
+layout: home
+title: Config
+---
+
+<script type="text/javascript" src="/dc-web/skins/js/docker/api/image.js"></script>
+<script type="text/javascript" src="/dc-web/skins/js/docker/api/service.js"></script>
+<script type="text/javascript" src="config.js"></script>
+<!-- page title -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h3>
+        Services /<small>Config</small>
+      </h3>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form id="serviceForm" class="form-horizontal" role="form">
+      <div class="row">
+        <div class="col-md-8">
+          <!-- General settings-->
+          <div class="panel panel-gray" id="generalSettings">
+            <div class="panel-heading"><h3>General settings</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">IMAGE</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control input-no-border" id="image" name="image" placeholder="IMAGE NAME" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="serviceName">SERVICE NAME</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control input-no-border" id="serviceName" name="serviceName" placeholder="SERVICE NAME">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="stackList">ADD TO STACK</label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="stackList" name="stack" placeholder="Select a Stack">
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="containers">CONTAINERS</label>
+                <div class="col-sm-9">
+                    <input type="number" name="containers" id="containers" value="1"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Container setting-->
+          <div class="panel panel-gray" id="containerSettings">
+            <div class="panel-heading"><h3>Container settings</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="label">Labels</label>
+                <div class="col-sm-9">
+                  <div class="form-group">
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control input-no-border" id="label" name="label" placeholder=""/>
+                    </div>
+                    <div class="col-sm-5">
+                      <input type="text" class="form-control input-no-border" id="labelV" name="labelV" placeholder=""/>
+                    </div>
+                    <div class="col-sm-2">
+                      <span class="glyphicon glyphicon-plus" id="btnAddLabel"></span>
+                    </div>
+                    <table id="tblLabels" class="table light">
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">VOLUMES</label>
+                <div class="col-sm-9">
+                  <div class="form-group">
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control input-no-border" id="c_path" name="c_path" placeholder="Container path"/>
+                    </div>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control input-no-border" id="h_path" name="h_path" placeholder="Host path"/>
+                    </div>
+                    <div class="col-sm-3">
+                      <select id="readable" name="readable">
+                        <option value="true">Readable</option>
+                        <option value="false">Writable</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-1">
+                      <span class="glyphicon glyphicon-plus" id="btnAddVolumes"></span>
+                    </div>
+                    <table id="tblVolumes" class="table light">
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <!-- EndpointSpec -->
+          <!-- 
+          <div class="panel panel-gray" id="endpointSpec">
+            <div class="panel-heading"><h3>EndpointSpec</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">PORTS</label>
+                <div class="col-sm-9">
+                  <table id="tblEpPort" class="table light">
+                    <thead>
+                      <tr>
+                        <th style="width: 24%;">Container Port</th>
+                        <th style="width: 20%;">Protocol</th>
+                        <th style="width: 14%;">Published</th>
+                        <th style="width: 24%;">Node Port</th>
+                        <th style="width: 8%;"></th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                  <span class="pull-right">
+                    <button type="button" class="btn btn-default" id="btnUseImageDefault" name="btnUseImageDefault">Use image values</button>
+                    <button type="button" class="btn btn-default" id="btnAddPort" name="btnAddPort">Add port</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+      	  -->
+          <!-- Environment variables -->
+          <div class="panel panel-gray" id="environmentVariables">
+            <div class="panel-heading"><h3>Environment variables</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <div class="col-sm-5">
+                  <input type="text" class="form-control input-no-border" id="envName" name="envName" placeholder="NAME"/>
+                </div>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control input-no-border" id="envValue" name="envValue" placeholder="VALUE"/>
+                </div>
+                <div class="col-sm-2">
+                  <span class="glyphicon glyphicon-plus" id="btnAddEnv"></span>
+                </div>
+                <table id="tblEnvs" class="table light">
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-md-4">
+          <div class="panel panel-gray fixed">
+            <div class="panel-heading">SUMMARY
+            </div>
+            <div class="panel-body">
+              <div class="row summarys">
+                <a class="col-md-12" href="#generalSettings">General settings</a>
+                <a class="col-md-12" href="#containerSettings">Container settings</a>
+                <!--<a class="col-md-12" href="#endpointSpec">EndpointSpec</a>-->
+                <a class="col-md-12" href="#environmentVariables">Environment variables</a>
+              </div>
+              <div class="row">
+                <button type="button" id="btnCreate" class="btn btn-primary" >Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

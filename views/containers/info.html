@@ -1,0 +1,120 @@
+---
+layout: home
+title: Container
+---
+<!-- page title -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h3>Container / <small name="container_name"></small></h3>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 tabbable-line">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#tab-general">General</a></li>
+      <li><a data-toggle="tab" href="#tab-logs" onclick="loadLogs()">Logs</a></li>
+      <li><a data-toggle="tab" href="#tab-timeline">Timeline</a></li>
+      <li><a data-toggle="tab" href="#tab-terminal">Terminal</a></li>
+    </ul>
+    <div class="tab-content">
+     <div class="tab-pane active" id="tab-general">
+       <!--actions start-->
+       <div class="row">
+         <div class="col-md-12 action">
+           <div class="pull-right">
+             <div class="btn-group">
+               <a  class="btn btn-default dropdown-toggle" type="button" id="container-actions" data-toggle="dropdown" aria-haspopup="true">
+                 Actions<span class="caret"></span>
+               </a>
+               <ul class="dropdown-menu" aria-labelledby="container-actions">
+                 <li><a href="#" class="container-action container-action-restart">Restart</a></li>
+                 <li><a href="#" class="container-action container-action-terminate">Terminate</a></li>
+               </ul>
+             </div>
+             <a class="btn btn-default container-action container-action-start">Start</a>
+             <a class="btn btn-default container-action container-action-stop">Stop</a>
+           </div>
+         </div>
+       </div>
+       <!--actions end-->
+       <!-- General start -->
+       <div class="row">
+         <div class="col-md-12 panel">
+           <div class="panel-body container-info">
+             <div class="col-md-4">
+              <div class="row item title"><h3 id="container_name" name="container_name" class="text-left nowrap"></h3></div>
+              <div class="row item"><h4 id="container_status" name="container_status" class="status"></h4></div>
+              <div class="row item"><span class="glyphicon glyphicon-time"></span><small id="container_started"></small></div>
+             </div>
+             <div class="col-md-4">
+               <div class="row item">
+                 <label class="col-sm-6 control-label item-label">SERVICE NAME</label><div class="col-sm-6 item-value nowrap" id="service-name"></div>
+               </div>
+               <div class="row item">
+                 <label class="col-sm-6 control-label item-label">IMAGE TAG</label><div class="col-sm-6 item-value nowrap" id="image"></div>
+               </div>
+               <div class="row item">
+                 <label class="col-sm-6 control-label item-label">RUN COMMAND</label><div class="col-sm-6 item-value" id="command"></div>
+               </div>
+             </div>
+             <div class="col-md-4">
+               <div class="row item">
+                 <label class="col-sm-6 control-label item-label">PID</label><div class="col-sm-6 item-value" id="pid"></div>
+               </div>
+               <div class="row item">
+                 <label class="col-sm-6 control-label item-label">PORTS</label>
+                 <div class="col-sm-6 item-value" id="ports"><table class="table light" id="tblPorts"><tbody></tbody></table></div>
+               </div>
+             </div>
+           </div>
+          </div>
+        </div>
+        <!-- General end -->
+        
+        <!-- Environment variables start -->
+        <div class="row">
+         <div class="col-md-12 panel">
+           <div class="panel-heading">
+             <h3>Environment Variables</h3>
+           </div>
+           <div class="panel-body container-info envs">
+             <table class="table light" id="tblEnvs"><tbody></tbody></table>
+           </div>
+          </div>
+        </div>
+        <!-- Environment variables end -->
+        
+        <!-- Volumes  start -->
+        <div class="row">
+         <div class="col-md-12 panel">
+           <div class="panel-heading">
+             <h3>Volumes</h3>
+           </div>
+           <div class="panel-body container-info volumes">
+             <table class="table light" id="tblVolumes">
+             	<thead>
+             		<th style="with: 40%;">Host Path</th>
+             		<th style="with: 40%;">Container Path</th>
+             		<th style="with: 20%;">RW</th>
+             	</thead>
+             	<tbody></tbody>
+             </table>
+           </div>
+          </div>
+        </div>
+        <!-- Volumes  end -->
+      </div>
+      <div class="tab-pane" id="tab-logs">
+      	<div class="console" id="divLogs">
+        </div>
+      </div>
+      <div class="tab-pane" id="tab-timeline">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="/dc-web/skins/js/docker/api/container.js"></script>
+<script type="text/javascript" src="info.js"></script>

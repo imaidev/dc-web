@@ -1,0 +1,203 @@
+section.page-content{
+  margin-top: 61px;
+}
+.panel.fixed{
+  position: fixed;
+  margin-top: 20px;
+}
+.page-header{
+  margin: 10px 0px 10px 0;
+}
+.panel.panel-gray,.panel.panel-gray .panel-heading,.panel.panel-gray .panel-body{
+  background-color: #FBFBFC;
+}
+.panel-heading{
+  float: left;
+  width: 100%;
+}
+.panel-heading>.captions{
+  float: left;
+  display: inline-block;
+  font-size: 18px;
+  line-height: 2;
+}
+.panel-heading>.actions{
+  float: right;
+  display: inline-block;
+  padding: 6px 0 14px 0;
+}
+.panel-body{
+  float: left;
+  width: 100%;
+}
+
+ul>li{
+  list-style: none;
+}
+/**service list start**/
+ul#serviceList>li{
+  border-bottom: 1px solid #ccc;
+  list-style: none;
+  padding: 15px 5px 15px 5px;
+}
+
+ul#serviceList>li:first-child{
+  border-top: 1px solid #ccc;
+}
+ul#serviceList>li:hover{
+  background-color: #eee;
+  cursor: pointer;
+}
+.check-col{
+  width: 40px;
+}
+.service-name{
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.service-replicas{
+  font-size: 14px;
+}
+.service-status{
+  font-size: 16px;
+  color: #37CBCA;
+}
+.service-info.containers .item,.service-info.containers .item .item-title{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+/**service list end**/
+
+/**container list start**/
+ul#containerList>li{
+  border-bottom: 1px solid #ccc;
+  list-style: none;
+  padding: 15px 5px 15px 5px;
+}
+
+ul#containerList>li:first-child{
+  border-top: 1px solid #ccc;
+}
+ul#containerList>li:hover{
+  background-color: #eee;
+  cursor: pointer;
+}
+.check-col{
+  width: 40px;
+}
+.container-name{
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.container-status{
+  font-size: 14px;
+  color: #37CBCA;
+}
+.container-service,.container-image{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/**container list end**/
+/**container info start**/
+
+/**container info end**/
+.nowrap{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+iframe{
+  width: 100%;
+  border: none;
+}
+.summarys a{
+  font-size: 16px;
+}
+/** form start **/
+input.input-no-border,.bootstrap-tagsinput input{
+  border: none !important;
+  border-bottom: 1px solid #ccc !important;
+}
+input.input-no-border:focus,.bootstrap-tagsinput input:focus{
+  border-bottom: 2px solid #1AAAF8 !important;
+}
+.no-border{
+  border: none !important;
+  background-color: tranparent;
+}
+ .no-padding-left{
+   padding-left: 0px;
+ }
+ .no-padding-right{
+   padding-right: 0px;
+ }
+.bootstrap-tagsinput{
+  width: 100%;
+}
+.bootstrap-tagsinput span{
+  border: none !important;
+}
+.bootstrap-tagsinput .tag.label.label-info{
+  line-height: 2;
+}
+.label-title{
+  line-height: 2;
+  font-size: 16px;
+}
+.glyphicon{
+  cursor: pointer;
+}
+/** form end **/
+/** loading div start**/
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); 
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg); 
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); 
+  } 
+}
+.ball-clip-rotate-multiple {
+  position: relative; 
+}
+.ball-clip-rotate-multiple > div {
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border: 2px solid #0ff;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-radius: 100% !important;
+    height: 35px;
+    width: 35px;
+    -webkit-animation: rotate 1s 0s ease-in-out infinite;
+    animation: rotate 1s 0s ease-in-out infinite; 
+}
+.ball-clip-rotate-multiple > div:last-child {
+  display: inline-block;
+  top: 10px;
+  left: 10px;
+  width: 15px;
+  height: 15px;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  border-color: #0ff transparent #0ff transparent;
+  -webkit-animation-direction: reverse;
+  animation-direction: reverse; 
+}
+/** loading div start**/
