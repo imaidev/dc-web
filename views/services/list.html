@@ -69,10 +69,10 @@ title: 应用列表
 			        		<div class="col-md-12 service-status" name="s_stats" v-text="">running</div>
 			        	</div>
 			        	<div class="col-md-4">
-			        		<div class="col-md-12 service-image" title="使用镜像" v-text="service.Spec.TaskTemplate.ContainerSpec.Image"></div>
+			        		<div class="col-md-12 service-image" title="使用镜像" v-text="service.Spec.TaskTemplate.ContainerSpec.Image"><span class="glyphicon glyphicon-tag"></span></div>
 			        	</div>
 			        	<div class="col-md-3">
-			        		<div class="col-md-12 service-ut" title="更新时间" v-text="service.UpdatedAt"></div>
+			        		<div class="col-md-12 service-ut" title="更新时间" v-text="service.UpdatedAt.substring(0,19).replace('T', ' ')"><span class="glyphicon glyphicon-time"></span></div>
 			        	</div>
 			        </div>
 			        <div class="col-md-1">

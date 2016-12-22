@@ -231,3 +231,7 @@ table.no-border{
 	bottom: 40px;
 	margin-right: 50px;
 }
+/**左侧导航栏**/
+.nav{padding-left: 20px;}
+.nav li.nav-header{font-size: 18px;}
+.nav li a{font-size: 16px;}
