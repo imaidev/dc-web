@@ -14,24 +14,16 @@
 </title>
 
 <!-- Bootstrap core CSS -->
-{% if site.github %}
 <link href="https://fogray.github.io/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-{% else %}
-<link href="https://fogray.github.io/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-{% endif %}
-{% if page.slug == "css" or page.slug == "components" or page.slug == "js" %}
-  <!-- Optional Bootstrap Theme -->
-{% if site.github %}
-  <link href="data:text/css;charset=utf-8," data-href="https://fogray.github.io/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
-{% else %}
-  <link href="data:text/css;charset=utf-8," data-href="https://fogray.github.io/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" id="bs-theme-stylesheet">
-{% endif %}
-{% endif %}
-<link href="https://fogray.github.io/dc-web/skins/css/component.css" rel="stylesheet">
-<link href="https://fogray.github.io/dc-web/skins/css/form.css" rel="stylesheet">
+
+<!-- Optional Bootstrap Theme -->
+<link href="data:text/css;charset=utf-8," data-href="https://fogray.github.io/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+
+<link href="//dev.imaicloud.com/dc-web/skins/css/component.css" rel="stylesheet">
+<link href="//dev.imaicloud.com/dc-web/skins/css/form.css" rel="stylesheet">
 
 <!-- Documentation extras -->
-<script src="https://fogray.github.io/dc-web/skins/js/jquery-1.11.3.min.js"></script>
+<script src="//dev.imaicloud.com/dc-web/skins/js/jquery-1.11.3.min.js"></script>
 <script src="//cdn.bootcss.com/vue/2.1.6/vue.min.js"></script>
 <!--[if lt IE 9]>
 <script src="https://fogray.github.io/bootstrap/assets/js/ie8-responsive-file-warning.js"></script>
@@ -44,9 +36,9 @@
   <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 <script src="//dev.imaicloud.com/iam-web/skins/js/jquery.base64.js"></script>
-<script src="https://fogray.github.io/dc-web/skins/js/CookieTool.js"></script>
-<script src="https://fogray.github.io/dc-web/skins/js/form.js"></script>
-<script src="https://fogray.github.io/dc-web/skins/js/ajaxUtil.js"></script>
+<script src="//dev.imaicloud.com/dc-web/skins/js/CookieTool.js"></script>
+<script src="//dev.imaicloud.com/dc-web/skins/js/form.js"></script>
+<script src="//dev.imaicloud.com/dc-web/skins/js/ajaxUtil.js"></script>
 
 <!-- Favicons -->
 <link rel="icon" href="/favicon.ico">
