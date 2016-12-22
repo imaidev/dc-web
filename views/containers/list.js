@@ -37,7 +37,7 @@ function itemDiv(data){
   	  , t_id = labels['com.docker.swarm.task.id'], t_name = labels['com.docker.swarm.task.name']
   	  , status = data.Status, state = data.State, image = data.Image, ct = data.Created
   var left = '<div class="col-md-1 check-col">'
-  	  			+'<div class="checkbox"><label><input class="selector" type="checkbox" name="selector" value="'+c_id+'"/></label></div>'
+  	  			+'<div class="checkbox"><label><input class="form-control selector" type="checkbox" name="selector" value="'+c_id+'"/></label></div>'
               +'</div>';
   var cn = '<div class="col-md-3 container-info" data-nid="'+n_id+'" data-sid="'+s_id+'" data-cid="'+c_id+'" data-tid="'+t_id+'">'
         +'<div class="row"><div class="col-md-12 container-name" title="'+c_name+'">'+c_name.substring(c_name.indexOf('__')+2)+'</div></div>'

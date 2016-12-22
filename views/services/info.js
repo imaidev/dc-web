@@ -1,10 +1,146 @@
 var service_id = null;
 var service_name = null;
+var vm = null;
 $(function(){
   service_id = getParam('service_id');
-  loadServiceInfo(service_id)
-  $('#btnEdit').click(function(){
-    window.location.href = 'edit.html?service_id='+service_id;
+
+  vm = new Vue({
+		el: '#app-service-info',
+		data: {
+			service: {},
+			containers: [],
+			envs: [],
+			ports: [],
+			volumes: [],
+			isModify: false
+		},
+		methods: {
+			inspectService: function(){
+				ServiceAction.info(service_id, function(data, status){
+			    if (status == 'success' && data instanceof Object){
+			    	var sn = data.Spec.Name, sn_short = sn.substring(sn.indexOf('__')+2), sn_icon = sn_short.substring(0, sn_short.indexOf('__')),
+			    	ua = data.UpdateAt,
+			    	image = data.Spec.TaskTemplate.ContainerSpec.Image;
+			      vm.service = {name: sn, shortName: sn_short, icon:sn_icon, updateAt: ua, image: image, status: 'running'};
+			      
+			      vm.containers = data.ContainerInfo;
+			      
+			      if (data.Spec.hasOwnProperty('EndpointSpec') && data.Spec.EndpointSpec.hasOwnProperty('Ports')) {
+			      	vm.ports = data.Spec.EndpointSpec.Ports;
+			      }
+
+			      if (data.Spec.TaskTemplate.ContainerSpec.hasOwnProperty('Mounts')) {
+			      	vm.volumes = data.Spec.TaskTemplate.ContainerSpec.Mounts;
+			      }
+			      
+			      if (data.Spec.TaskTemplate.ContainerSpec.hasOwnProperty('Env')) {
+			      	var es = data.Spec.TaskTemplate.ContainerSpec.Env;
+			      	vm.envs = [];
+			      	for (var i = 0; i < es.length; i++) {
+			      		var e = es[i].split('=');
+			      		vm.envs.push({key: e[0], value: e[1]});
+			      	}
+			      }
+			      
+			      vm.isModify =false;
+			      
+			      if (data.Spec.Mode.hasOwnProperty('Replicated')) {
+			        NoUiSliderDom.setValue($('#slider-step')[0], data.Spec.Mode.Replicated.Replicas);
+			      }
+			    }
+			  });
+			},
+			addEnv: function(){
+				vm.envs.push({key:'',value:''});
+			},
+			addPort: function(){
+				vm.ports.push({TargetPort:'', Protocol:'tcp'});
+			},
+			addVolume: function(){
+				vm.volumes.push({Source:'', Target:''});
+			},
+			removetr: function(event){
+				if ($(event.target).parents('table')[0].rows.length == 1) return;
+				
+				var index = $(event.target).parents('tr').index();
+				var tbl = $(event.target).parents('table')[0].id;
+				switch(tbl){
+					case 'tblPorts': vm.ports.splice(index, 1); break;
+					case 'tblEnvs': vm.envs.splice(index, 1); break;
+					case 'tblVolumes': vm.volumes.splice(index, 1); break;
+				}
+			},
+			save: function(){
+				var tmp_envs = [];
+				for (var i = 0; i < vm.envs.length; i++){
+					if ($.trim(vm.envs[i].key) == '') {
+						vm.envs.splice(i, 1);
+						i--;
+					} else {
+						tmp_envs.push(vm.envs[i].key+'='+vm.envs[i].value);
+					}
+				}
+				for (var i = 0; i < vm.ports.length; i++){
+					if ($.trim(vm.ports[i].TargetPort) == '') {
+						vm.ports.splice(i, 1);
+						i--;
+					}
+				}
+				for (var i = 0; i < vm.volumes.length; i++){
+					if ($.trim(vm.volumes[i].Source) == '' || $.trim(vm.volumes[i].Target) == '') {
+						vm.volumes.splice(i, 1);
+						i--;
+					}
+				}
+				
+  			var config = {Name: vm.service.name, 
+                TaskTemplate:{
+                  ContainerSpec:{
+                    Image: vm.service.image,
+                    Env: tmp_envs,
+                    Mounts: vm.volumes
+                  }
+                },
+                EndpointSpec: {
+                  Ports: vm.ports
+                }
+               };
+				ServiceAction.update(service_id, vm.service.index, config, function(sdata, status){
+					window.reload();
+				});
+			}
+		}
+	});
+  vm.inspectService();
+  
+  vm.$watch('envs', function(){
+	  vm.isModify = true;
+  });
+  
+  vm.$watch('ports', function(){
+	  vm.isModify = true;
+  });
+  
+  vm.$watch('volumes', function(){
+	  vm.isModify = true;
+  });
+  
+  $('.btn.btn-start').click(function(){
+    ServiceAction.start(service_id, function(data, status){
+    	vm.inspectService();
+    });
+  });
+  $('.btn.btn-stop').click(function(){
+    ServiceAction.stop(service_id, function(data, status){
+    	vm.inspectService();
+    });
+  });
+  $('.btn.btn-remove').click(function(){
+    ServiceAction.terminate(service_id, function(data, status){
+    	if (status == 'success'){
+    		window.location.href = 'list.html';
+    	}
+    });
   });
   $('#btnScale').click(function(){
     var scales = NoUiSliderDom.getValue($('#slider-step')[0]);
@@ -12,54 +148,6 @@ $(function(){
   });
   $(document).on('click', '#containers .item .item-title', function(){
     var cid = $(this).parent().attr('data-id'), nodeId = $(this).parent().attr('data-nid');
-    window.location.href = DC_CONFIG.WEBUI_CONTEXT+'/views/containers/info.html?cid='+cid+'&nid='+nodeId;
+    window.location.href = 'info.html?cid='+cid+'&nid='+nodeId;
   });
 });
-
-function loadServiceInfo(){
-  ServiceAction.info(service_id, function(data, status){
-    if (status == 'success'){
-      service_name = data.Spec.Name;
-      $('small[name="service_name"]').html(service_name);
-      $('#service_name').html(service_name.substring(service_name.indexOf('__')+2));
-      //service state 由tasks获取
-      $('#service_state').html('');
-      $('#updatedAt').html(data.UpdatedAt);
-      var cs = data.Spec.TaskTemplate.ContainerSpec;
-      $('#image').html(cs.Image);
-      if (data.Spec.Mode.hasOwnProperty('Replicated')) {
-        $('#mode').html('Replicated');
-        NoUiSliderDom.setValue($('#slider-step')[0], data.Spec.Mode.Replicated.Replicas);
-      }
-      
-  var ports = data.Spec.hasOwnProperty('EndpointSpec') && data.Spec.EndpointSpec.hasOwnProperty('Ports')? data.Spec.EndpointSpec.Ports:null;
-      if (ports != null && ports.length > 0){
-        for (var i = 0; i < ports.length; i++) {
-          var tr = '<tr><td>'+ports[i].TargetPort+'</td><td>'+ports[i].Protocol+'/'+ports[i].PublishedPort+'</td><tr>';
-          $('#tblPorts tbody').append(tr);
-        }
-      }
-      //Containers info
-      var containers = data.ContainerInfo;
-      $('#containers').html('');
-      for (var i = 0; i < containers.length; i++) {
-      	var cn = containers[i].Name;
-        var item = '<div class="col-md-6 item" data-id="'+containers[i].Id+'" data-nid="'+containers[i].NodeID+'">'
-                    +'<div class="col-md-6 item-title" title="'+cn+'">'+cn.substring(cn.indexOf('__')+2)+'</div>'
-                    +'<div class="col-md-2 item-state '+containers[i].State+'">'+containers[i].State+'</div>'
-                    +'<div class="col-md-4 item-date">'+containers[i].Status+'</div>'
-                  +'</div>';
-        $('#containers').append(item)
-      }
-      
-      //Env
-      $('#tblEnvs tbody').html('');
-      var envs = data.Spec.TaskTemplate.ContainerSpec.hasOwnProperty('Env') ? data.Spec.TaskTemplate.ContainerSpec.Env : [];
-      for (var i = 0; i < envs.length; i++) {
-        var env = envs[i].split('=');
-        var tr = '<tr><td class="item-key">'+env[0]+'</td><td class="item-value">'+env[1]+'</td></tr>';
-        $('#tblEnvs tbody').append(tr);
-      }
-    }
-  });
-}

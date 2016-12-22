@@ -6,112 +6,171 @@ title: Service
 <div class="row">
   <div class="col-md-12">
     <div class="page-header">
-      <h3>Service / <small name="service_name"></small></h3>
+      <h3>应用详情</h3>
     </div>
-    <div class="pull-right">
+    <div class="pull-right" style="margin-top: -50px;">
       <div class="noUiSlider slider-step pull-left" id="slider-step" style="width: 200px;"></div>
       <button class="btn btn-default btn-link pull-left" type="button" id="btnScale">Scale</button>
     </div>
   </div>
 </div>
+<div id="app-service-info">
+<div class="row block">
+	<div class="col-md-3">
+		<div class="row">
+			<h3 class="app-name col-md-12" v-text="service.shortName"></h3>
+		</div>
+		<div class="row">
+			<div class="col-md-12" v-text="service.updateAt"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 service-action">
+				<a class="btn btn-success btn-start">启动</a>
+				<a class="btn btn-warning btn-stop">停止</a>
+				<a class="btn btn-danger btn-remove">删除</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-9">
+		<div class="row padding-10">
+			<div class="col-md-2">状态:</div>
+			<div v-bind:class="['col-md-2', 'service-info', service.status]" v-text="service.status"></div>
+			<div class="col-md-2">使用镜像:</div>
+			<div class="col-md-6" v-text="service.image"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">访问地址:</div>
+			<div class="col-md-10">
+				<a v-bind:target="'_' + service.name" v-bind:href="'https://'+service.name+'.service.imaicloud.com'" v-text = "'https://' + service.name +'.service.imaicloud.com'"></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 容器 start -->
+<div class="row block">
+  <div class="col-md-2">
+    <h3>容器</h3>
+  </div>
+  <div class="col-md-10 service-info containers" id="containers">
+    <div class="col-md-6 item" v-for="container in containers" :data-id="container.Id" :data-nid="container.NodeID">
+				  <div class="col-md-6 item-title" :title="container.Name" v-text="container.Name.substring(container.Name.indexOf('__')+2)"></div>
+					<div :class="['col-md-2', 'item-state', container.State]" v-text="container.State"></div>
+					<div class="col-md-4 item-date" v-text="container.Status"></div>
+				</div>
+  </div>
+</div>
+<!-- 容器 end -->
+
 <div class="row">
   <div class="col-md-12 tabbable-line">
     <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#tab-general">General</a></li>
-      <li><a data-toggle="tab" href="#tab-logs">Logs</a></li>
-      <li><a data-toggle="tab" href="#tab-timeline">Timeline</a></li>
+      <li class="active"><a data-toggle="tab" href="#tab-general">配置</a></li>
+      <li><a data-toggle="tab" href="#tab-logs">日志</a></li>
+      <li><a data-toggle="tab" href="#tab-monitor">监控</a></li>
     </ul>
     <div class="tab-content">
-     <div class="tab-pane active" id="tab-general">
-       <!--actions start-->
-       <div class="row">
-         <div class="col-md-12 action">
-           <div class="pull-right">
-             <a class="btn btn-default service-action service-action-edit" id="btnEdit">Edit</a>
-             <div class="btn-group">
-               <a  class="btn btn-default dropdown-toggle" type="button" id="service-actions" data-toggle="dropdown" aria-haspopup="true">
-                 Actions<span class="caret"></span>
-               </a>
-               <ul class="dropdown-menu" aria-labelledby="service-actions">
-                 <li><a href="#" class="service-action service-action-redeploy">Redeploy</a></li>
-                 <li><a href="#" class="service-action service-action-terminate">Terminate</a></li>
-               </ul>
-             </div>
-             <a class="btn btn-default service-action service-action-start">Start</a>
-           </div>
-         </div>
-       </div>
-       <!--actions end-->
-       <!-- General start -->
-       <div class="row">
-         <div class="col-md-12 panel">
-           <div class="panel-body service-info">
-             <div class="col-md-4">
-              <div class="row item title"><h3 id="service_name" name="service_name" class="text-left"></h3></div>
-              <div class="row item"><h4 id="service_state" name="service_state" class="state"></h4></div>
-              <div class="row item"><span class="glyphicon glyphicon-time"></span><small id="updatedAt"></small></div>
-             </div>
-             <div class="col-md-4">
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">STATCK NAME</label><div class="col-sm-6 item-value" id="stack"></div>
-               </div>
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">IMAGE TAG</label><div class="col-sm-6 item-value" id="image"></div>
-               </div>
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">RUN COMMAND</label><div class="col-sm-6 item-value" id="command"></div>
-               </div>
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">MODE</label><div class="col-sm-6 item-value" id="mode"></div>
-               </div>
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">RESTART CONDITION</label><div class="col-sm-6 item-value" id="restartCondition"></div>
-               </div>
-             </div>
-             <div class="col-md-4">
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">NETWORK</label><div class="col-sm-6 item-value" id="network"></div>
-               </div>
-               <div class="row item">
-                 <label class="col-sm-6 control-label item-label">PORTS</label>
-                 <div class="col-sm-6 item-value" id="ports"><table class="table light" id="tblPorts"><tbody></tbody></table></div>
-               </div>
-             </div>
-           </div>
-          </div>
-        </div>
-        <!-- General end -->
-        <!-- Container start -->
-        <div class="row">
-         <div class="col-md-12 panel">
-           <div class="panel-heading">
-             <h3>Containers</h3>
-           </div>
-           <div class="panel-body service-info containers" id="containers">
-           </div>
-          </div>
-        </div>
-        <!-- Container end -->
-        <!-- Environment variables start -->
-        <div class="row">
-         <div class="col-md-12 panel">
-           <div class="panel-heading">
-             <h3>Environment Variables</h3>
-           </div>
-           <div class="panel-body service-info envs">
-             <table class="table light" id="tblEnvs"><tbody></tbody></table>
-           </div>
-          </div>
-        </div>
-        <!-- Environment variables end -->
+      <div class="tab-pane active" id="tab-general">
+     	
+     	  <div class="row">
+     		  <div class="col-md-10">
+     				<!-- 端口 start -->
+		        <div class="row block">
+				       <div class="col-md-2">
+				         <h3>端口</h3>
+				       </div>
+				       <div class="col-md-7 service-info envs">
+				         <table class="table light no-border" id="tblPorts">
+				         	 <tbody>
+				         	 	<tr v-for="port in ports">
+				         	 		<td>
+				         	 			<input type="number" name="container-port"  class="form-control" v-model="port.TargetPort" :value="port.TargetPort" placeholder="容器端口" />
+				         	 		</td>
+				         	 		<td>
+				         	 			<select name="protocolList" v-model="port.Protocol" class="form-control">
+												    <option value="tcp" :selected="port.Protocol=='tcp'">TCP</option>
+												    <option value="udp" :selected="port.Protocol=='udp'">UDP</option>
+				         	 			</select>
+				         	 		</td>
+				         	 		<td><span class="glyphicon glyphicon-trash" v-on:click="removetr"></span></td>
+				         	 	</tr>
+				         	 </tbody>
+				         </table>
+				         <div class="col-md-12">
+				         	<a class="btn btn-default col-md-12" v-on:click="addPort">添加</a>
+				         </div>
+				       </div>
+		        </div>
+		        <!-- 端口 end -->
+		        
+		        <!-- 挂载卷 start -->
+		        <div class="row block">
+		           <div class="col-md-2">
+		             <h3>挂载卷</h3>
+		           </div>
+		           <div class="col-md-7 service-info volumes">
+		             <table class="table light no-border" id="tblVolumes" >
+		             	 <tbody>
+		             	 	<tr v-for="volume in volumes">
+		             	 		<td>
+		             	 			<input type="text" name="container-path" class="form-control" v-model="volume.Target" :value="volume.Target" placeholder="容器目录" />
+		             	 		</td>
+		             	 		<td>
+		             	 			<input type="text" name="host-path" class="form-control" v-model="volume.Source"  :value="volume.Source" placeholder="主机目录" />
+		             	 		</td>
+		             	 		<td><span class="glyphicon glyphicon-trash" v-on:click="removetr"></span></td>
+		             	 	</tr>
+		             	 </tbody>
+		             </table>
+		             <div class="col-md-12">
+		             	<a class="btn btn-default col-md-12" v-on:click="addVolume">添加</a>
+		             </div>
+		           </div>
+		        </div>
+		        <!-- 挂载卷 end -->
+		        
+		        <!-- 环境变量 start -->
+		        <div class="row block">
+		           <div class="col-md-2">
+		             <h3>环境变量</h3>
+		           </div>
+		           <div class="col-md-7 service-info envs">
+		             <table class="table light no-border" id="tblEnvs">
+		             	 <tbody>
+		             	 	 <tr v-for="env in envs">
+		             	 	 	 <td>
+		             	 	 	 	 <input type="text" class="form-control" name="envName" v-model="env.key"
+		             	 	 	 				  placeholder="键" :value="env.key" />
+		             	 	 	 </td>
+		             	 	 	 <td>
+		             	 	 	 	 <input type="text" class="form-control" name="envValue" v-model="env.value"
+		             	 	 	 				  placeholder="值" :value="env.value" />
+		             	 	 	 </td>
+		             	 	 	 <td><span class="glyphicon glyphicon-trash" v-on:click="removetr"></span></td>
+		             	 	 </tr>
+		             	 </tbody>
+		             </table>
+		             <div class="col-md-12">
+		             	<a class="btn btn-default col-md-12" v-on:click="addEnv">添加</a>
+		             </div>
+		           </div>
+		        </div>
+		        <!-- 环境变量  end -->
+     		  </div>
+	     		<div class="col-md-2">
+	     			<button class="btn btn-info fixed" v-bind:disabled="!isModify" v-on:click="save">保存更改</button>
+	     		</div>
+	     	</div>
         
       </div>
       <div class="tab-pane" id="tab-logs">
       </div>
-      <div class="tab-pane" id="tab-timeline">
+      <div class="tab-pane" id="tab-monitor">
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script type="text/javascript" src="/dc-web/skins/js/docker/api/service.js"></script>

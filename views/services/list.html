@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Services
+title: 应用列表
 ---
 <script type="text/javascript" src="/dc-web/skins/js/docker/api/service.js"></script>
 <script type="text/javascript" src="list.js"></script>
@@ -8,8 +8,7 @@ title: Services
   <div class="row">
     <div class="col-md-12">
       <div class="page-header">
-        <h3>
-          Services <small></small>
+        <h3>应用列表
         </h3>
       </div>
     </div>
@@ -21,7 +20,7 @@ title: Services
           <div class="captions">
             <div class="checkbox">
               <label>
-                <input class="selector selector-all" type="checkbox">Select All
+                <input class="form-control selector selector-all" type="checkbox">Select All
               </label>
             </div>
           </div>
@@ -32,7 +31,6 @@ title: Services
               <ul class="dropdown-menu actions" role="menu" aria-labelledby="actions">
                 <li><a href="#" onclick="stop()">Stop</a></li>
                 <li><a href="#" onclick="start()">Start</a></li>
-                <li><a href="#" onclick="redeploy()">Redeploy</a></li>
                 <li><a href="#" onclick="terminate()">Terminate</a></li>
               </ul>
             </div>
@@ -40,8 +38,52 @@ title: Services
           </div>
         </div>
         <div class="panel-body">
-          <ul class="list-group" id="serviceList">
-          </ul>
+			<div>
+			  <ul id="serviceList">
+			      <li v-for="service in services" v-model="service" v-bind:data-sid="service.ID">
+			      	<div class="row">
+			        <div class="col-md-1 check-col">
+			        	<div class="checkbox">
+			        		<label>
+			        			<input class="form-control selector" type="checkbox" name="selector"/>
+		        			</label>
+		        		</div>
+			        </div>
+			        <div class="col-md-10">
+			        	<div class="col-md-4 service-info">
+			        		<div class="row">
+			        			<div class="col-md-12 service-name" v-bind:title="service.Spec.Name" v-text="service.Spec.Name.substring(service.Spec.Name.indexOf('__')+2)"></div>
+		        			</div>
+		        			<div class="row">
+		        				<div class="col-md-12">
+		        					<span class="badge" title="容器" v-text="service.Spec.Mode.Replicated.Replicas"></span>
+		        				</div>
+	        				</div>
+		        			<div class="row">
+		        				<div class="col-md-12">
+		        					<a title="应用URL" v-bind:target="'_' + service.Spec.Name" v-bind:href="'https://'+service.Spec.Name+'.service.imaicloud.com'" v-text = "'https://' + service.Spec.Name +'.service.imaicloud.com'"></a>
+		        				</div>
+	        				</div>
+			        	</div>
+			        	<div class="col-md-1">
+			        		<div class="col-md-12 service-status" name="s_stats" v-text="">running</div>
+			        	</div>
+			        	<div class="col-md-4">
+			        		<div class="col-md-12 service-image" title="使用镜像" v-text="service.Spec.TaskTemplate.ContainerSpec.Image"></div>
+			        	</div>
+			        	<div class="col-md-3">
+			        		<div class="col-md-12 service-ut" title="更新时间" v-text="service.UpdatedAt"></div>
+			        	</div>
+			        </div>
+			        <div class="col-md-1">
+			        	<a v-if="1>0"><span class="glyphicon glyphicon-stop" title="停止"></span></a>
+			        	<a v-else><span class="glyphicon glyphicon-play" title="启动"></span></a>
+			        	<a><span class="glyphicon glyphicon-trash" title="删除"></span></a>
+			        </div>
+			        </div>
+			      </li>
+			  </ul>
+			</div>
         </div>
       </div>
     </div>

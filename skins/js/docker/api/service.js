@@ -104,27 +104,35 @@ var ServiceAction = (function(){
     });
   };
   
-  var start = function(sid){
+  var start = function(sid, success_cal){
     //根据service id查询出该service的所有task
     //tasks?filters={%22service%22:[%2294wkdf86cbyjgkthp3nsqjihn%22]}
     // 在task列表中检出container id，start container操作
     $.post(DC_CONFIG.DC_API_SERVICES_PATH+'/'+sid+'/start', {}, function(text, status){
       	if (status == 'success') {
-    		ToastrTool.success('start service success ');
+      		if (typeof success_cal == 'function'){
+      			success_cal(text, status);
+      		} else {
+    				ToastrTool.success('start service success ');
+      		}
       	} else {
-    		ToastrTool.error('start service failure:'+status, text);
+    			ToastrTool.error('start service failure:'+status, text);
       	}
     }, function(e,h,r){
     	ToastrTool.error('start service failure ', r);
     });
   };
   
-  var stop = function(sid){
+  var stop = function(sid, success_cal){
     $.post(DC_CONFIG.DC_API_SERVICES_PATH+'/'+sid+'/stop', {}, function(text, status){
       	if (status == 'success') {
-    		ToastrTool.success('stop service success ');
+      		if (typeof success_cal == 'function'){
+      			success_cal(text, status);
+      		} else {
+		    		ToastrTool.success('stop service success ');
+      		}
       	} else {
-    		ToastrTool.error('stop service failure:'+status, text);
+    			ToastrTool.error('stop service failure:'+status, text);
       	}
     }, function(e,h,r){
     	ToastrTool.error('stop service failure ', r);

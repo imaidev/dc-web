@@ -1,6 +1,9 @@
 section.page-content{
   margin-top: 61px;
 }
+.panel{
+	float: left;
+}
 .panel.fixed{
   position: fixed;
   margin-top: 20px;
@@ -154,6 +157,10 @@ input.input-no-border:focus,.bootstrap-tagsinput input:focus{
 .glyphicon{
   cursor: pointer;
 }
+input[type='checkbox'].form-control{
+	height: 20px;
+	width: 20px;
+}
 /** form end **/
 /** loading div start**/
 @keyframes rotate {
@@ -201,3 +208,26 @@ input.input-no-border:focus,.bootstrap-tagsinput input:focus{
   animation-direction: reverse; 
 }
 /** loading div start**/
+
+.row.block{
+	margin: 15px 0px;
+	border-bottom: 1px solid #F0F0F0;
+	padding: 10px 0px;
+}
+.row.padding-10{
+	padding: 10px 0px;
+}
+table.no-border, table.no-border tr, table.no-border td{
+	border: none !important;
+}
+table.no-border td input, table.no-border td select{
+	height: 100%;
+}
+table.no-border{
+	margin-bottom: 0px;
+}
+.btn.fixed{
+	position: fixed;
+	bottom: 40px;
+	margin-right: 50px;
+}

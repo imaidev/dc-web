@@ -10,6 +10,9 @@ var DC_CONFIG = {
 };
 var USER_INFO = null;
 $(function(){
+  //vue.js 调试模式
+  Vue.config.debug = true
+  	  
   $('input[type="checkbox"].selector.selector-all').click(function(){
     if (this.checked) {
       $('input[type="checkbox"][name="selector"]').each(function(){
