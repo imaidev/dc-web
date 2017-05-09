@@ -16,27 +16,14 @@ $(function(){
   	},
   	methods: {
   	  loadApp: function(){
-  	    $.ajax({
-          url: DC_CONFIG.DC_API_HOST+'/appstore/'+vm.appId,
-          type: 'GET',
-          beforeSend: function(xhr){
-            xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
-          },
-          success: function(data){
-            data.stars = parseInt(data.stars, 10);
-            vm.app = data;
-          }
-        });
+  	    $.fn.dcGet(DC_CONFIG.DC_API_HOST+'/appstore/'+vm.appId, function(data, status){
+          data.stars = parseInt(data.stars, 10);
+          vm.app = data;
+  	    });
   	  },
   	  loadAppJudgements: function(){
-        $.ajax({
-          url: DC_CONFIG.DC_API_HOST+'/appstore/'+vm.appId+'/judgements',
-          type: 'GET',
-          beforeSend: function(xhr){
-            xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
-          },
-          success: function(data){
-            if (data.success) {
+  	    $.fn.dcGet(DC_CONFIG.DC_API_HOST+'/appstore/'+vm.appId+'/judgements', function(data, status){
+  	      if (data.success) {
               var judgelist=data.data.judgelist, statics=data.data.statics, len = judgelist.length;
               //评论列表
               for(var i = 0; i < len; i++) {
@@ -46,8 +33,7 @@ $(function(){
               //评论统计
               vm.judgestatic = statics;
             }
-          }
-        });
+  	    });
       },
   	  install: function(){
   	    vm.btnText = '安装中...';
@@ -63,24 +49,14 @@ $(function(){
   	  },
   	  submitJudge: function(){
   	    var _stars = $('#judgeWraper input[name="score"]').val();
-        $.ajax({
-          url: DC_CONFIG.DC_API_AUTHED_PATH+'/app/'+vm.app.id+'/judge',
-          type: 'POST',
-          dataType: 'json',
-          contentType: 'application/json',
-          data: JSON.stringify({title: vm.judgetitle, content: vm.judgeInput, stars: _stars}),
-          beforeSend: function(xhr){
-            xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
-          },
-          success: function(data){
-            if (data.success) {
+  	    $.fn.dcPost(DC_CONFIG.DC_API_AUTHED_PATH+'/app/'+vm.app.id+'/judge', {title: vm.judgetitle, content: vm.judgeInput, stars: _stars}, function(data, status){
+  	      if (data.success) {
               ToastrTool.success('评论成功');
               vm.loadAppJudgements();
             } else {
               ToastrTool.error('评论失败', data.message);
             }
-          }
-        });
+  	    });
   	  }
   	}
   });
@@ -90,7 +66,7 @@ $(function(){
   vm.$watch('judgestatic.avgstars', function (val, oldVal) {
     $('#avgJudge').raty({
       number: 5,
-      path:'/skins/plugins/raty/img/',
+      path: DC_CONFIG.WEBUI_CONTEXT + '/skins/plugins/raty/img/',
       score: function(){
         return vm.judgestatic.avgstars;
       }
@@ -117,7 +93,7 @@ $(function(){
   });
   $('#judgeWraper').raty({ 
     number: 5, 
-    path:'/skins/plugins/raty/img/',
+    path: DC_CONFIG.WEBUI_CONTEXT + '/skins/plugins/raty/img/',
     score: function() {
       return $(this).attr('data-score');
     }

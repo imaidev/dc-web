@@ -57,7 +57,7 @@ $(function(){
         });
       },
       serviceInfo: function(sname){
-        Router.open('/views/services/info.html?pk='+sname);
+        Router.open('../services/info.html?pk='+sname);
       }
 		}
 	});

@@ -1,9 +1,9 @@
 var Router = {
   href: function(url){
-    window.location.href = DC_CONFIG.WEBUI_CONTEXT + '/'+url;
+    window.location.href = url;
   },
   open: function(url, title) {
-    window.open(DC_CONFIG.WEBUI_CONTEXT + '/'+url, title);
+    window.open(url, title);
   },
   reload: function(force) {
     window.location.reload();
