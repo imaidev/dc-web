@@ -29,36 +29,48 @@ var ContainerAction = (function(){
     });
   };
   
-  var start = function(cid, nodeId){
+  var start = function(cid, nodeId, success_cal){
     $.post(DC_CONFIG.DC_API_CONTAINERS_PATH+'/'+cid+'/start?node-id='+nodeId, {}, function(text, status){
       	if (status == 'success') {
-				ToastrTool.success('start container success ');
+      		if(typeof success_cal == 'function') {
+      			success_cal(text, status);
+      		} else {
+						ToastrTool.success('start container success ');
+					}
       	} else {
-    		ToastrTool.error('start container failure:'+status, text);
+    			ToastrTool.error('start container failure:'+status, text);
       	}
     }, function(e,h,r){
     	ToastrTool.error('start container failure ', r);
     });
   };
   
-  var stop = function(cid, nodeId){
+  var stop = function(cid, nodeId, success_cal){
     $.post(DC_CONFIG.DC_API_CONTAINERS_PATH+'/'+cid+'/stop?node-id='+nodeId, null, function(text, status){
       	if (status == 'success') {
-    		ToastrTool.success('stop container success ');
+      		if(typeof success_cal == 'function') {
+      			success_cal(text, status);
+      		} else {
+    				ToastrTool.success('stop container success ');
+    			}
       	} else {
-    		ToastrTool.error('stop container failure:'+status, text);
+    			ToastrTool.error('stop container failure:'+status, text);
       	}
     }, function(e,h,r){
     	ToastrTool.error('stop container failure ', r);
     });
   };
   
-  var restart = function(cid, nodeId){
+  var restart = function(cid, nodeId, success_cal){
   	AjaxTool.post(DC_CONFIG.DC_API_CONTAINERS_PATH+'/'+cid+'/restart?node-id='+nodeId, null, function(text, status){
       	if (status == 'success') {
-				ToastrTool.success('start container success ');
+      		if(typeof success_cal == 'function') {
+      			success_cal(text, status);
+      		} else {
+						ToastrTool.success('start container success ');
+					}
       	} else {
-    		ToastrTool.error('start container failure:'+status, text);
+    			ToastrTool.error('start container failure:'+status, text);
       	}
     }, function(e,h,r){
     	ToastrTool.error('start container failure ', r);

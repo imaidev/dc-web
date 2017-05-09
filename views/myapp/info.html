@@ -1,0 +1,87 @@
+---
+layout: home
+title: 我的应用详情
+---
+
+<link href="/skins/plugins/codemirror/lib/codemirror.css" rel="stylesheet">
+<link href="/skins/plugins/codemirror/theme/base16-dark.css" rel="stylesheet">
+<script src="/skins/plugins/codemirror/codemirror.js"></script>
+<script src="/skins/plugins/codemirror/mode/yaml/yaml.js"></script>
+
+<div id="app-info">
+  <!-- page title -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="page-header">
+        <h3 v-text="myapp.app_name"></h3>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="icon-area pull-left">
+      <img :src="app.icon" style="width: 100px; height: 100px;" />
+    </div>
+    <div class="info-area pull-left" style="margin-left: 20px;">
+      <p style="margin-top: 10px;"><span v-for=" star in app.stars" class="glyphicon glyphicon-star active" style="display: inline-block;"></span></p>
+      <p style="margin: 5px 5px;"><label class="control-label">部署时间：</label><label v-text="myapp.deploytime"></label></p>
+    </div>
+  </div>
+  
+  <!---->
+  <div class="row block" style="margin-top: 20px;">
+    <div class="col-md-12">
+      <div class="tabbable-line">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#tab-service">服务</a></li>
+          <li ><a data-toggle="tab" href="#tab-yaml">YAML</a></li>
+        </ul>
+      </div>
+        <div class="tab-content">
+          <!-- tab 服务 -->
+          <div class="tab-pane active" id="tab-service" style="padding: 10px 10px 10px 10px;">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table light table-fixed">
+                  <thead>
+                    <tr>
+                      <th style="width: 20%;">服务名</th>
+                      <th style="width: 20%;">使用镜像</th>
+                      <th style="width: 40%;">访问URL</th>
+                      <th style="width: 20%;">容器规模</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="service in services" :data-sname="service.name">
+                      <td>
+                        <a @click="serviceInfo(service.name)" v-text="service.name" :title="service.name"></a>
+                      </td>
+                      <td v-text="service.image"></td>
+                      <td>
+                        <a :href="'http://'+service.dnsname" target="_blank" v-text="'http://'+service.dnsname"></a>
+                      </td>
+                      <td>
+                        <div :id="service.name+'_noUiSlider'" class="noUiSlider slider-step pull-left" style="width: 120px;"></div>
+                        <button class="btn btn-default btn-link btn-scale pull-left" type="button" id="btnScale">扩展</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- tab YAML -->
+          <div class="tab-pane " id="tab-yaml">
+            <div class="row">
+              <div class="yamlEditor col-md-12" style="width: 1000px; height: 400px;">
+                <textarea id="sfEditor" name="stackfile" style="width: 100%; height: 100%;"></textarea>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="info.js"></script>
+<script type="text/javascript" src="/skins/js/docker/api/service.js"></script>

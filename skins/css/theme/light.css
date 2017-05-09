@@ -1,11 +1,15 @@
-.panel,.panel-heading,panel-body{
-  background-color: #FBFBFC;
+.panel-heading{
+  background-color: #FFFFFF;
 }
+.glyphicon.glyphicon-star{
+  color: #FBB800;
+}
+
 /**Scale start**/
 .noUiSlider.noUi-horizontal{
   width: 200px;
   height: 8px;
-  top: 14px;
+  top: 20px;
 }
 .noUiSlider .noUi-base{
   background-color: #abe2fb;
@@ -26,6 +30,12 @@
 }
 /**Scale end**/
 
+.running{
+	color: #00cbca !important;
+}
+.shutdown{
+	color: #ef4a53 !important;
+}
 /**Service info start**/
 .service-info div{
   white-space: nowrap;
@@ -77,13 +87,10 @@
 .container-info .item-state .running{
   color: #00cbca;
 }
+.container-status:not(.running){
+  color: #ef4a53;
+}
 /**Container info end**/
-.running{
-	color: #00cbca !important;
-}
-.shutdown{
-	color: #ef4a53 !important;
-}
 .console{
 	min-width: 700px;
 	max-width: 950px;
@@ -101,4 +108,74 @@
 }
 .badge{
 	background-color: #20b5b5;
+}
+/** Button **/
+.btn.btn-add{ color: #FFFCFB; border:none; background-color: #CBA307; }
+.btn.btn-add:hover{ color: #FFFCFB; border:none; background-color: #BB8004; }
+.btn.action,.btn.action:hover{color: #FFFCFB; border:none;}
+.btn.action.start{
+	background-color: #6BD873;
+}
+.btn.action.start:hover{
+	background-color: #5BB550;
+}
+.btn.action.restart{
+	background-color: #6BD873;
+}
+.btn.action.restart:hover{
+	background-color: #5BB550;
+}
+.btn.action.stop{
+	background-color: #161F29;
+}
+.btn.action.stop:hover{
+	background-color: #060D06;
+}
+.btn.action.trash{
+	background-color: #d9534f;
+}
+.btn.action.trash:hover{
+	background-color: #c9302c;
+}
+.container-action .btn[disabled=disabled],.container-action .btn[disabled=true]{
+	background-color: #A5A5A5;
+	border: none;
+}
+/**错误信息**/
+.error{color: #F03F2A;}
+
+.label{color: #333;}
+
+/**用户卡片**/
+.mt-element-overlay>li{
+	border: 1px solid #F0F6FA;
+	padding: 0px;
+	margin: 10px 20px;
+}
+
+/**评论星级*/
+ul.judge-stars{
+  display: inline-block;
+  vertical-align: middle;
+}
+ul.judge-stars>li{
+  float: left;
+}
+
+/**应用分类**/
+ul.app-type-list>li{
+  position: relative;
+  display: block;
+  float: left;
+}
+ul.app-type-list>li>a{
+  padding: 8px 20px 8px 20px;
+  color: #000;
+  opacity: 0.8;
+  text-decoration: none;
+  position: relative;
+  display: block;
+}
+ul.app-type-list>li>a:hover{
+  background-color: #E0EAF0;
 }

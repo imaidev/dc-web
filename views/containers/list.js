@@ -1,70 +1,91 @@
+var vm = null;
 $(function(){
-  listContainers();
-  $('.container-action.container-action-start').click(function(){
+  vm = new Vue({
+  	el: '#containerList',
+  	data: {
+  	  containers: []
+  	},
+  	methods: {
+  	  loadContainers: function(){
+  	  	listContainers();
+  	  },
+  	  start: function(event){
+  	  	var $li = $(event.target).parents('li');
+  	  	var cid = $li.attr('data-cid'), nid = $li.attr('data-nid');
+  	  	ContainerAction.start(cid, nid, function(data, text){
+	    	ToastrTool.success('容器已成功启动.');
+    		vm.loadContainers();
+	    });
+  	  },
+  	  restart: function(event){
+  	  	var $li = $(event.target).parents('li');
+  	  	var cid = $li.attr('data-cid'), nid = $li.attr('data-nid');
+  	  	ContainerAction.restart(cid, nid, function(data, text){
+	    	ToastrTool.success('容器已重启.');
+    		vm.loadContainers();
+	    });
+  	  },
+  	  stop: function(event){
+  	  	var $li = $(event.target).parents('li');
+  	  	var cid = $li.attr('data-cid'), nid = $li.attr('data-nid');
+  	  	ContainerAction.stop(cid, nid, function(data, text){
+	    	ToastrTool.success('容器已停止.');
+    		vm.loadContainers();
+	    });
+  	  },
+  	  trash: function(event){
+  	  	var $li = $(event.target).parents('li');
+  	  	var cid = $li.attr('data-cid'), nid = $li.attr('data-nid');
+  	  	ContainerAction.terminate(cid, nid, function(data, text){
+	    	ToastrTool.success('容器已删除.');
+    		vm.loadContainers();
+	    });
+  	  }
+  	}
+  });
+  vm.loadContainers();
+  $('.actions .container-action.container-action-start').click(function(){
   	start();
   });
-  $('.container-action.container-action-stop').click(function(){
+  $('.actions .container-action.container-action-stop').click(function(){
   	stop();
   });
-  $('.container-action.container-action-restart').click(function(){
+  $('.actions .container-action.container-action-restart').click(function(){
   	restart();
   });
-  $('.container-action.container-action-terminate').click(function(){
+  $('.actions .container-action.container-action-terminate').click(function(){
   	terminate();
   });
   $(document).on('click', '#containerList>li .container-info', function(){
-    var c_id = $(this).attr('data-cid'), n_id = $(this).attr('data-nid');
+    var c_id = $(this).parents('li').attr('data-cid'), n_id = $(this).parents('li').attr('data-nid');
     window.location.href = 'info.html?cid='+c_id+'&nid='+n_id;
   });
 });
 function listContainers(){
-  var $wrapObj = $('#containerList');
-  $wrapObj.html('');
+  
   ContainerAction.list(function(data,status){
-    if (status == 'success'){
-      var json = eval(data), len = json.length;
+    if (status == 'success' && data instanceof Array){
+      var len = data.length;
+      vm.containers = [];
       for (var i = 0; i < len; i++) {
-        $wrapObj.append(itemDiv(json[i]));
+      	var c = data[i], c_id = c.Id, c_n = c.Names[0].substring(1), c_short_name = c_n.substring(c_n.indexOf('__')+2)
+      		, labels = c.Labels, n_id = labels['com.docker.swarm.node.id']
+      		, s_id = labels['com.docker.swarm.service.id'], s_name = labels['com.docker.swarm.service.name']
+      		, s_short_name = s_name.split('__')[1]
+      		, status = c.Status, state = c.State, image = c.Image;
+      	vm.containers.push({id: c_id, name: c_n, shortName: c_short_name
+      						, service: s_name, serviceShortName: s_short_name
+      						, nid: n_id, status: status, state: state, image: image});
+        
       }
-    } else {
-      AlertTool.error('List containers failed:'+status);
     }
   });
-}
-function itemDiv(data){
-  var c_id = data.Id, c_name = data.Names[0].substring(1), labels = data.Labels
-  	  , n_id = labels['com.docker.swarm.node.id'], s_id = labels['com.docker.swarm.service.id'], s_name = labels['com.docker.swarm.service.name']
-  	  , t_id = labels['com.docker.swarm.task.id'], t_name = labels['com.docker.swarm.task.name']
-  	  , status = data.Status, state = data.State, image = data.Image, ct = data.Created
-  var left = '<div class="col-md-1 check-col">'
-  	  			+'<div class="checkbox"><label><input class="form-control selector" type="checkbox" name="selector" value="'+c_id+'"/></label></div>'
-              +'</div>';
-  var cn = '<div class="col-md-3 container-info" data-nid="'+n_id+'" data-sid="'+s_id+'" data-cid="'+c_id+'" data-tid="'+t_id+'">'
-        +'<div class="row"><div class="col-md-12 container-name" title="'+c_name+'">'+c_name.substring(c_name.indexOf('__')+2)+'</div></div>'
-        +'<div class="row"><div class="col-md-12 container-state '+state+'" name="c_stats" data-nid="'+n_id+'" data-cid="'+c_id+'">'+state+'</div></div>'
-        +'</div>';
-  var sn = '<div class="col-md-3 container-service" title="service: '+s_name+'">'+s_name.substring(c_name.indexOf('__')+2)+'</div>';
-  var image = '<div class="col-md-2 container-image" title="image: '+image+'">'+image+'</div>';
-  var st = '<div class="col-md-3 container-status"><div class="col-md-12 container-status">' + status + '</div></div>';
-  var actions = '<div class="col-md-1 container-actions">'
-                  +'<div class="btn-group">'
-                    +'<a class="btn btn-elipsedropdown-toggle" data-toggle="dropdown" aria-haspopup="true">∷</a>'
-                    +'<ul class="dropdown-menu">'
-                      +'<li><a onclick="ContainerAction.start(\''+c_id+'\',\''+n_id+'\')">Start</a></li>'
-                      +'<li><a onclick="ContainerAction.stop(\''+c_id+'\',\''+n_id+'\')">Stop</a></li>'
-                      +'<li><a onclick="ContainerAction.restart(\''+c_id+'\',\''+n_id+'\')">Restart</a></li>'
-                      +'<li><a onclick="ContainerAction.terminate(\''+c_id+'\',\''+n_id+'\')">Terminate</a></li>'
-                    +'</ul>'
-                  +'</div></div>';
-  var right = '<div class="col-md-11"><div class="row">'+cn+sn+image+st+actions+'</div></div>';
-  return '<li><div class="row">'+left+right+'</div></li>';
-  
 }
 
 function selectedContainer(){
   var sids = new Array();
   $('input[type="checkbox"][name="selector"]:checked').each(function(){
-    var c = $('.container-info' ,$(this).parents('li')), cid = c.attr('data-cid'), nid = c.attr('data-nid');
+    var c = $(this).parents('li'), cid = c.attr('data-cid'), nid = c.attr('data-nid');
     if (cid && nid){
       sids.push({cid:cid, nid:nid});
     }
@@ -117,8 +138,9 @@ function terminate(){
     	counter++;
     	ToastrTool.warning('Delete container success.', 'container:'+cids[i]);
     	if (counter == cids.length) {
-    		window.location.reload();
+    		vm.loadContainers();
     	}
     });
   }
 }
+

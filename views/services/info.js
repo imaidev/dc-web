@@ -2,7 +2,7 @@ var service_id = null;
 var service_name = null;
 var vm = null;
 $(function(){
-  service_id = getParam('service_id');
+  service_id = getParam('pk');
 
   vm = new Vue({
 		el: '#app-service-info',
@@ -18,12 +18,16 @@ $(function(){
 			inspectService: function(){
 				ServiceAction.info(service_id, function(data, status){
 			    if (status == 'success' && data instanceof Object){
-			    	var sn = data.Spec.Name, sn_short = sn.substring(sn.indexOf('__')+2), sn_icon = sn_short.substring(0, sn_short.indexOf('__')),
-			    	ua = data.UpdateAt,
-			    	image = data.Spec.TaskTemplate.ContainerSpec.Image;
-			      vm.service = {name: sn, shortName: sn_short, icon:sn_icon, updateAt: ua, image: image, status: 'running'};
+			    	var sn = data.Spec.Name
+			    	, ua = data.UpdateAt, url = 'https://'+sn+'.swarm.imaicloud.com'
+			    	, image = data.Spec.TaskTemplate.ContainerSpec.Image;
+			      vm.service = {name: sn, updateAt: ua, url:url, image: image, status: 'running'};
 			      
-			      vm.containers = data.ContainerInfo;
+			      vm.containers = [];
+			      for (var i = 0; i < data.ContainerInfo.length; i++) {
+			      	var ci = data.ContainerInfo[i], _cn = ci.Name, _cn_short = _cn.substring(_cn.indexOf('__')+2);
+			      	vm.containers.push({id: ci.Id, nid: ci.NodeID, name: _cn, shortName: _cn_short, state: ci.State, status: ci.Status});
+			      }
 			      
 			      if (data.Spec.hasOwnProperty('EndpointSpec') && data.Spec.EndpointSpec.hasOwnProperty('Ports')) {
 			      	vm.ports = data.Spec.EndpointSpec.Ports;
@@ -106,7 +110,7 @@ $(function(){
                 }
                };
 				ServiceAction.update(service_id, vm.service.index, config, function(sdata, status){
-					window.reload();
+				  Router.reload();
 				});
 			}
 		}
@@ -148,6 +152,6 @@ $(function(){
   });
   $(document).on('click', '#containers .item .item-title', function(){
     var cid = $(this).parent().attr('data-id'), nodeId = $(this).parent().attr('data-nid');
-    window.location.href = 'info.html?cid='+cid+'&nid='+nodeId;
+    Router.open('/views/containers/info.html?cid='+cid+'&nid='+nodeId, '_blank');
   });
 });

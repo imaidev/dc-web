@@ -1,0 +1,67 @@
+---
+layout: appstore
+title: 应用商店
+---
+<div id="app-list" class="row" style="padding-left: 5%; padding-right: 5%;">
+  <div class="col-md-2">
+    <!-- Docs master nav -->
+    <div class="fluid">
+      <div class="panel light">
+        <div class="panel-heading" style="border-bottom: 1px solid #eee;">
+          <h4>分类</h4>
+        </div>
+        <div class="panel-body">
+          <ul class="app-type-list" style="padding-left: 0px;">
+            <li v-for="t in typelist" v-model="t">
+              <a @click="search(t.id)" v-text="t.type_name"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header">
+            <h3>应用商店
+              <span class="pull-right">
+                <a class="btn btn-info" href="../myapp/deploy.html">发布应用</a>
+              </span>
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 panel">
+          <div class="panel-heading">
+            <div class="form-group">
+              <input class="form-control" type="text" v-model="searchkey" placeholder="搜索" @change="loadApps()" />
+            </div>
+          </div>
+          <div class="panel-body appstore">
+            <div class="mt-element-card mt-element-overlay">
+                <div class="col-lg-4" v-for="app in apps" >
+                  <a @click="detail(app.id)">
+                  <div class="mt-card-item">
+                    <div class="mt-card-avatar mt-overlay-1">
+                      <img class="app-icon" v-bind:src="app.icon">
+                    </div>
+                    <div class="mt-card-content">
+                      <h3 class="mt-card-name app-title" v-text="app.name"></h3>
+                      <p class="mt-card-desc font-grey-mint app-judge"><span v-for=" star in app.stars" class="glyphicon glyphicon-star" style="display: inline-block;"></span></p>
+                      <p class="mt-card-desc font-grey-mint app-introduce" v-text="app.introduce"></p>
+                    </div>
+                  </div>
+                  </a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="list.js"></script>
+  

@@ -7653,7 +7653,8 @@ Customized Bootstrap Panels
 /***
 Accordions
 ***/
-.panel-heading { }
+.panel-heading {
+  background: #eee; }
   .panel-heading a {
     text-decoration: none; }
   .panel-heading a:active,
@@ -13655,7 +13656,7 @@ Custimized Bootstrap Wells
   box-shadow: none !important; }
 
 /*--------------------------------------------------
-	[Widgets]
+  [Widgets]
 ----------------------------------------------------*/
 /*** Widget Background Colors ***/
 .widget-bg-color-purple {

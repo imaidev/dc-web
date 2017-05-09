@@ -7,37 +7,52 @@ $(function(){
 		},
 		methods: {
 			listService: function(){
-				ServiceAction.list(null, function(data, status){
-					if (data instanceof Array) {
-						vm.services =data; 
+				ServiceAction.list(null, function(json, status){
+					vm.services =[];
+					if (json instanceof Array) {
+						for (var i = 0; i < json.length; i++) {
+							var data = json[i];
+							var sn = data.Spec.Name, id = data.ID
+							, replicas = data.Spec.Mode.Replicated.Replicas
+							, url = 'https://'+sn+'.swarm.imaicloud.com'
+							, status = 'running', isRunning = status == 'running' ? true: false
+							, image = data.Spec.TaskTemplate.ContainerSpec.Image
+							, updatedAt = data.UpdatedAt.substring(0,19).replace('T', ' ')
+							vm.services.push({name: sn, id: id, replicas: replicas
+								              , url: url, status: status, isRunning: isRunning, image: image, updatedAt: updatedAt});
+						}	
 					}
 				});
+			},
+			start: function(event){
+				var sid = $(event.target).parents('li').attr('data-sid');
+				ServiceAction.start(sid, function(data, status){
+					ToastrTool.success('应用成功启动');
+					vm.listService();
+				});
+			},
+			stop: function(){
+				var sid = $(event.target).parents('li').attr('data-sid');
+				ServiceAction.stop(sid, function(data, status){
+					ToastrTool.success('应用已停止');
+					vm.listService();
+				});
+			},
+			trash: function(){
+				var sid = $(event.target).parents('li').attr('data-sid');
+				ServiceAction.terminate(sid, function(data,status){
+			    	ToastrTool.success('应用已删除');
+		    		vm.listService();
+			    });
+			},
+			info: function(){
+				var sid = $(event.target).parents('li').attr('data-sid');
+				window.location.href = 'info.html?pk='+sid;
 			}
 		}
 	});
   vm.listService();
-  $(document).on('click', '#serviceList>li .service-info .service-name', function(){
-    var s_id = $(this).parents('li').attr('data-sid');
-    window.location.href = 'info.html?service_id='+s_id;
-  });
-  $(document).on('click', '#serviceList>li .glyphicon-stop', function(){
-    var s_id = $(this).parents('li').attr('data-sid');
-    ServiceAction.stop(s_id);
-  });
-  $(document).on('click', '#serviceList>li .glyphicon-start', function(){
-    var s_id = $(this).parents('li').attr('data-sid');
-    ServiceAction.start(s_id);
-  });
-  $(document).on('click', '#serviceList>li .glyphicon-trash', function(){
-    var s_id = $(this).parents('li').attr('data-sid');
-    ServiceAction.terminate(s_id, function(data,status){
-    	if (status == 'success'){
-    		window.reload();
-    	}
-    });
-  });
-}
-);
+ });
 
 function selectedService(){
   var sids = new Array();
@@ -57,7 +72,12 @@ function start(){
     return;
   }
   for (var i = 0; i < sids.length; i++) {
-    ServiceAction.start(sids[i]);
+    ServiceAction.start(sids[i], function(data, status){
+    	if(i+1 == sids.length) {
+    		ToastrTool.success('应用成功启动');
+    		vm.listService();
+    	}
+    });
   }
 }
 
@@ -68,18 +88,12 @@ function stop(){
     return;
   }
   for (var i = 0; i < sids.length; i++) {
-    ServiceAction.stop(sids[i]);
-  }
-}
-
-function redeploy(){
-  var sids = selectedService();
-  if (sids.length == 0) {
-    //alert('');
-    return;
-  }
-  for (var i = 0; i < sids.length; i++) {
-    ServiceAction.redeploy(sids[i]);
+    ServiceAction.stop(sids[i], function(data, status){
+    	if(i+1 == sids.length) {
+    		ToastrTool.success('应用已停止运行');
+    		vm.listService();
+    	}
+    });
   }
 }
 
@@ -90,6 +104,11 @@ function terminate(){
     return;
   }
   for (var i = 0; i < sids.length; i++) {
-    ServiceAction.terminate(sids[i]);
+    ServiceAction.terminate(sids[i], function(data, status){
+    	if(i+1 == sids.length) {
+    		ToastrTool.success('应用已删除');
+    		vm.listService();
+    	}
+    });
   }
 }

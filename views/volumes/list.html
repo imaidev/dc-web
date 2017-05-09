@@ -1,0 +1,71 @@
+---
+layout: home
+title: Volume
+---
+
+<div class="row">
+<div class="col-md-12">
+  <div class="page-header">
+    <h3>Volume</h3>
+    <small>容器持久化数据、共享数据的存储空间</small>
+  </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-12 panel">
+    <div class="panel-heading">
+      <div class="captions">我的Volume
+      </div>
+      <div class="actions">
+        <div class="btn-group">
+        	<button class="btn btn-default btn-add" id="btnCreate"  data-toggle="modal" data-target="#newVolume">新建</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+			  <ul id="volumeList" class="mt-element-overlay">
+		      <li v-for="vol in volumes" v-model="vol" v-bind:data-vn="vol.name" class="col-md-4">
+		      	<div class="mt-overlay-1 mt-scroll-up">
+                <div class="mt-content"><h3 v-model="vol.shortName" v-text="vol.shortName"></h3></div>
+                <div class="mt-overlay">
+                    <ul class="mt-info">
+                        <li>
+                            <a class="btn default btn-outline" href="#" title="删除" @click="trash($event)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </li>
+                        <!--
+                        <li>
+                            <a class="btn default btn-outline" href="javascript:;" @click="info">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+                        </li>
+                        -->
+                    </ul>
+                </div>
+            </div>
+		      </li>
+			  </ul>
+    </div>
+  </div>
+</div>
+
+<div id="newVolume" class="bootbox modal fade bootbox-prompt" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true" style="margin-top: -10px;">×</button>
+				<div class="bootbox-body">
+					<input id="volumeName" class="bootbox-input bootbox-input-text form-control"
+								 autocomplete="off" type="text" placeholder="Volume名称" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="btnCreateSave" data-bb-handler="ok" type="button" class="btn btn-primary">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="/skins/js/docker/api/volume.js"></script>
+<script type="text/javascript" src="list.js"></script>
