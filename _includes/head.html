@@ -5,9 +5,26 @@
 <meta name="keywords" content="HTML, CSS, JS, JavaScript, framework, bootstrap, front-end, frontend, web development">
 <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 
+<title>
+  {% if page.layout == "home" %}
+    {{ page.title }}
+  {% else %}
+    {{ page.title }} &middot; Docker Cloud
+  {% endif %}
+</title>
+<script type="text/javascript">
+var INS_APM = window.INS_APM || {};
+INS_APM.info={appId:'1004'};
+</script>
+<script type="text/javascript" src="https://fogray.github.io/binsight-js/binsight.min.js"></script>
+
 <link href="/dc-web/skins/plugins/pace/themes/pace-theme-flash.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="//fogray.github.io/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Optional Bootstrap Theme -->
+<link href="data:text/css;charset=utf-8," data-href="//fogray.github.io/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+
 <link href="/dc-web/skins/css/component.css" rel="stylesheet">
 <link href="/dc-web/skins/css/form.css" rel="stylesheet">
 
