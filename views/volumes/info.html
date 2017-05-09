@@ -1,0 +1,41 @@
+---
+layout: home
+title: Volume
+---
+<!-- page title -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h3>Volume详情</h3>
+    </div>
+  </div>
+</div>
+
+<div id="app-volume-info">
+	<div class="row block">
+		<div class="col-md-5">
+			<div class="row">
+				<h3 class="app-name col-md-12" v-model="volume.shortName" v-text="volume.shortName"></h3>
+			</div>
+		</div>
+	</div>
+
+	<!-- 绑定的服务 start -->
+	<!--
+	<div class="row block">
+	  <div class="col-md-2">
+	    <h3>绑定的服务</h3>
+	  </div>
+	  <div class="col-md-10">
+	    <div class="col-md-6 item" v-for="service in services"  v-model="service" :data-id="service.id" :data-nid="service.nid">
+			  <div class="col-md-6 item-title" v-model="service.shortName" :title="service.name" v-text="service.shortName"></div>
+			</div>
+	  </div>
+	</div>
+	-->
+	<!-- 绑定的服务 end -->
+</div>
+
+
+<script type="text/javascript" src="/dc-web/skins/js/docker/api/volume.js"></script>
+<script type="text/javascript" src="info.js"></script>

@@ -38,6 +38,7 @@ ul>li{
   list-style: none;
 }
 /**service list start**/
+ul#serviceList{padding-left: 0px;}
 ul#serviceList>li{
   border-bottom: 1px solid #ccc;
   list-style: none;
@@ -50,9 +51,6 @@ ul#serviceList>li:first-child{
 ul#serviceList>li:hover{
   background-color: #eee;
   cursor: pointer;
-}
-.check-col{
-  width: 40px;
 }
 .service-name{
   font-size: 18px;
@@ -92,8 +90,9 @@ ul#containerList>li:hover{
 .check-col{
   width: 40px;
 }
+ul li .container-name{font-size: 16px;}
+ul li .container-name:hover{color: #009DC7;}
 .container-name{
-  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -154,8 +153,15 @@ input.input-no-border:focus,.bootstrap-tagsinput input:focus{
   line-height: 2;
   font-size: 16px;
 }
-.glyphicon{
+a .glyphicon{
   cursor: pointer;
+}
+.glyphicon.large{
+	font-size: 22px;
+	line-height: 22px;
+}
+.glyphicon[disabled=disabled],.glyphicon[disabled=true]{
+	color: #A0A0A0;
 }
 input[type='checkbox'].form-control{
 	height: 20px;
@@ -217,6 +223,7 @@ input[type='checkbox'].form-control{
 .row.padding-10{
 	padding: 10px 0px;
 }
+/**表格**/
 table.no-border, table.no-border tr, table.no-border td{
 	border: none !important;
 }
@@ -226,12 +233,67 @@ table.no-border td input, table.no-border td select{
 table.no-border{
 	margin-bottom: 0px;
 }
+.table>thead>tr>th{
+	border-bottom: 1px solid #DDD8E5;
+}
+table.table-fixed{
+  table-layout: fixed;
+}
+table.table-fixed tbody tr td{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/**表格 end**/
 .btn.fixed{
 	position: fixed;
 	bottom: 40px;
 	margin-right: 50px;
 }
+
 /**左侧导航栏**/
 .nav{padding-left: 20px;}
 .nav li.nav-header{font-size: 18px;}
 .nav li a{font-size: 16px;}
+
+.left{float: left;}
+
+.noUi-tooltip{
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  margin-top: -24px;
+}
+
+/**应用商店start**/
+.appstore .mt-card-item{
+  position: absolute !important;
+}
+.appstore .mt-card-avatar{
+  float: left;
+}
+.appstore .mt-card-avatar>img{
+  margin-left: auto ;
+  margin-right: auto ;
+  width: 280px !important;
+  height: 180px !important;
+  cursor: pointer;
+}
+.appstore .mt-card-content{
+  float: left;
+  width: 100%;
+}
+.appstore .mt-card-content .app-title{
+  width: 100%;
+  text-align: center;
+}
+.appstore .mt-card-content .app-judge{
+  height: 20px;
+}
+.appstore .mt-card-content .app-introduce{
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  text-indent: 1em;
+}

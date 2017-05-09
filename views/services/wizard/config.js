@@ -5,7 +5,7 @@ $(function(){
 		data: {
 			imageName: '',
 			serviceName: '',
-			containers: '',
+			containers: 1,
 			c_path: '',
 			h_path: '',
 			isReadable: true,
@@ -22,10 +22,16 @@ $(function(){
 					if (data == null || typeof data != 'object' || (typeof data == 'object' && !data.hasOwnProperty('Id'))){
 			      return;
 			    }
-					var config = data.Config, volumes = config.Volumes, entryPoint = config.Entrypoint
+					var config = data.Config, _vols = config.Volumes, entryPoint = config.Entrypoint
 			    , exposedPorts = config.ExposedPorts, env = config.Env;
 			    
-			    vm.volumes = config.Volumes ? config.Volumes : [];
+			    vm.volumes = [];
+			    if (_vols) {
+			      for (var key in _vols) {
+			        var v = _vols[key], s = v && !$.isEmptyObject(v) ? v.Source : '';
+			        vm.volumes.push({Target: key, Source: s});
+			      }
+			    }
 			    
 			    vm.ports = [];
 			    if (exposedPorts != null) {
@@ -44,9 +50,10 @@ $(function(){
 				});
 			},
 			checksn: function(){
-			  var reg = /^[a-z][a-z0-9]{1,19}(__[1-9][0-9]{0,4})?$/g;
+			  if (vm.serviceName == '') return false;
+			  var reg = /^[a-z][a-z0-9]{1,19}?$/g;
 			  if (!reg.test(vm.serviceName)){
-			   	ToastrTool.warning('应用名称格式：小写字母、[任意数字]任意组合+[__端口号]');
+			   	ToastrTool.warning('服务名称格式：小写字母+数字组合');
 			  	$('#serviceName').select();
 			   	return false;
 			  }

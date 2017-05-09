@@ -1,0 +1,160 @@
+---
+layout: appstore
+title: 应用商店
+---
+
+<div id="app-detail">
+  <div class="row">
+    <div class="col-md-12 panel">
+      <div class="panel-heading">
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="icon-area pull-left">
+            <img :src="app.icon" style="width: 180px; height: 180px;" />
+          </div>
+          <div class="info-area pull-left" style="margin-left: 20px;">
+            <h1 v-text="app.name"></h1>
+            <p style="margin-top: 10px;"><span v-for=" star in app.stars" class="glyphicon glyphicon-star active" style="display: inline-block;"></span></p>
+            <p style="margin: 5px 5px;"><label class="control-label">使用镜像：</label><label v-text="app.image_name"></label></p>
+            <p style="margin: 5px 5px;"><label class="control-label">发布时间：</label><label v-text="app.createtime"></label></p>
+            <p style="margin: 5px 5px;"><button class="btn btn-primary form-control" type="button" @click="install()" v-text="btnText"></button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 panel">
+      <h3 class="panel-heading">应用简介：</h3>
+      <div class="panel-body">
+        <p v-text="app.introduce"></p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12 panel">
+      <h3 class="panel-heading">用户评论：</h3>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="panel" style="width: 100%;">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h3 style="text-align: center; font-size: 40px; line-height: 2.5; font-weight: 600;" v-model="judgestatic.avgstars" v-text="judgestatic.avgstars">4<small>分</small></h3>
+                    <div id="avgJudge"></div>
+                  </div>
+                  <div class="col-md-8" style="line-height: 2;">
+                    <div id="avg5" class="row">
+                      <div class="col-md-10">
+                        <label class="pull-left">5<span class="glyphicon glyphicon-star"></span>：</label>
+                        <div class="progress" style="margin-bottom: 2px;">
+                          <div class="progress-bar progress-bar-info" role="progressbar" :aria-valuenow="judgestatic.counts_5" aria-valuemin="0" aria-valuemax="100">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label v-model="judgestatic.counts_5" v-text="judgestatic.counts_5"></label>
+                      </div>
+                    </div>
+                    <div id="avg4" class="row">
+                      <div class="col-md-10">
+                        <label class="pull-left">4<span class="glyphicon glyphicon-star"></span>：</label>
+                        <div class="progress" style="margin-bottom: 2px;">
+                          <div class="progress-bar progress-bar-info" role="progressbar" :aria-valuenow="judgestatic.counts_4" aria-valuemin="0" aria-valuemax="100">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label v-model="judgestatic.counts_4" v-text="judgestatic.counts_4"></label>
+                      </div>
+                    </div>
+                    <div id="avg3" class="row">
+                      <div class="col-md-10">
+                        <label class="pull-left">3<span class="glyphicon glyphicon-star"></span>：</label>
+                        <div class="progress" style="margin-bottom: 2px;">
+                          <div class="progress-bar progress-bar-info" role="progressbar" :aria-valuenow="judgestatic.counts_3" aria-valuemin="0" aria-valuemax="100">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label v-model="judgestatic.counts_3" v-text="judgestatic.counts_3"></label>
+                      </div>
+                    </div>
+                    <div id="avg2" class="row">
+                      <div class="col-md-10">
+                        <label class="pull-left">2<span class="glyphicon glyphicon-star"></span>：</label>
+                        <div class="progress" style="margin-bottom: 2px;">
+                          <div class="progress-bar progress-bar-info" role="progressbar" :aria-valuenow="judgestatic.counts_2" aria-valuemin="0" aria-valuemax="100">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label v-model="judgestatic.counts_2" v-text="judgestatic.counts_2"></label>
+                      </div>
+                    </div>
+                    <div id="avg1" class="row">
+                      <div class="col-md-10">
+                        <label class="pull-left">1<span class="glyphicon glyphicon-star"></span>：</label>
+                        <div class="progress" style="margin-bottom: 2px;">
+                          <div class="progress-bar progress-bar-info" role="progressbar" :aria-valuenow="judgestatic.counts_1" aria-valuemin="0" aria-valuemax="100">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label v-model="judgestatic.counts_1" v-text="judgestatic.counts_1"></label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="row">
+              <label>我要评分：</label>
+              <div id="judgeWraper" style="display: inline-block;"></div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+              <label class="control-label pull-left" >标题：</label>
+              <div class="col-md-10 pull-left">
+                <input class="form-control" type="text" name="judgetitle" v-model="judgetitle" maxlength="50" style="height: 26px; width: 550px;"/>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+              <label class="control-label pull-left" style="width: 100%;">内容：
+                <small >您还可以输入<em v-model="judgeCharNumber" v-text="judgeCharNumber"></em>个字符</small>
+              </label>
+              <textarea id="traMyJudge" class="form-control" style="width: 595px; height: 60px; margin-left: 10px;" v-model="judgeInput"></textarea>
+            </div>
+            <div style="margin-top: 5px;">
+              <button type="button" class="btn btn-info btn-sm" @click="submitJudge()">发表评论</button>
+              <div v-if="islogin == '0'" style="float: right; margin-right: 50px; line-height: 2;">
+                <label>您还没登录，请先<a onclick="login()">登录</a></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul>
+          <li class="col-md-12" v-for="judgement in judgements" style="padding: 10px 10px; border-top: 1px solid #C1D6E7;">
+            <h4 v-text="judgement.title"></h4>
+            <p v-text="judgement.content"></p>
+            <div class="col-md-12">
+              <div class="pull-left">
+                <h4 class="pull-left" v-text="judgement.user_name"></h4>
+                <span style="margin-left: 20px; line-height: 3;" class="pull-left" v-text="judgement.createtime"></span>
+              </div>
+              <div class="pull-right">
+                <span v-for=" star in judgement.stars" class="glyphicon glyphicon-star active" style="display: inline-block;"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="detail.js"></script>
+  

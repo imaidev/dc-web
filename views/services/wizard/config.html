@@ -10,7 +10,7 @@ title: Config
 <div class="row">
   <div class="col-md-12">
     <div class="page-header">
-      <h3>创建应用</h3>
+      <h3>创建服务</h3>
     </div>
   </div>
 </div>
@@ -35,11 +35,11 @@ title: Config
 	                </div>
 	              </div>
 	              <div class="form-group">
-	                <label class="col-sm-3 control-label" for="serviceName">应用名称</label>
+	                <label class="col-sm-3 control-label" for="serviceName">服务名称</label>
 	                <div class="col-sm-9">
 	                  <input type="text" class="form-control input-no-border" id="serviceName" name="serviceName"
 	                  				@blur="checksn" v-model="serviceName" :value="serviceName"
-	                  			  placeholder="[小写字母、数字组合] + [__端口号]" />
+	                  			  placeholder="小写字母+数字组合 " />
 	                </div>
 	              </div>
 	              <div class="form-group">
@@ -86,7 +86,7 @@ title: Config
 	                    </tbody>
 	                  </table>
 	                  <span class="pull-right">
-	                    <button type="button" class="btn btn-default" @click="addPort"><span class="glyphicon glyphicon-plus"></span>添加</button>
+	                    <button type="button" class="btn btn-add" @click="addPort"><span class="glyphicon glyphicon-plus"></span>添加</button>
 	                  </span>
 	                </div>
 	              </div>
@@ -110,8 +110,10 @@ title: Config
 		                  			 v-model="h_path" :value="h_path"
 		                  			 placeholder="主机目录"/>
 		                </div>
-		                <div class="col-sm-1">
-		                  <span class="glyphicon glyphicon-plus" @click="addVolume"></span>
+		                <div class="col-sm-2">
+		                  <button type="button" class="btn btn-default" @click="addVolume">
+		                  	<span class="glyphicon glyphicon-plus"></span>
+		                  </button>
 		                </div>
 		                <table id="tblVolumes" class="table light">
 		                  <tbody>
@@ -148,7 +150,9 @@ title: Config
 	                  			 placeholder="值"/>
 	                </div>
 	                <div class="col-sm-2">
-	                  <span class="glyphicon glyphicon-plus" id="btnAddEnv" @click="addEnv"></span>
+	                  <button type="button" class="btn btn-default" @click="addEnv">
+	                  	<span class="glyphicon glyphicon-plus"></span>
+	                  </button>
 	                </div>
 	                <table id="tblEnvs" class="table light">
 	                  <tbody>
@@ -182,7 +186,7 @@ title: Config
 	                <a class="col-md-12" href="#environmentVariables">环境变量</a>
 	              </div>
 	              <div class="row">
-	                <button type="button" id="btnCreate" class="btn btn-primary" @click="submit">创建应用</button>
+	                <button type="button" id="btnCreate" class="btn btn-primary" @click="submit">创建服务</button>
 	              </div>
 	            </div>
 	          </div>

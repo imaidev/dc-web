@@ -6,9 +6,10 @@ var AjaxTool = {
       dataType: 'json',
       contentType: 'application/json',
       data: requestBody != null ? JSON.stringify(requestBody) : null,
-	  beforeSend: function(xhr){
-		$.blockUI({message:$('.loader')});
-	  },
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
+        $.blockUI({message:$('.loader')});
+      },
       error: function(e, h, r){
         if (typeof error != 'function'){
           ToastrTool.error('ajax post error: ' + r);
@@ -36,9 +37,10 @@ var AjaxTool = {
       dataType: 'json',
       contentType: 'application/json',
       data: requestBody != null ? JSON.stringify(requestBody):null,
-	  beforeSend: function(xhr){
-		$.blockUI({message:$('.loader')});
-	  },
+	    beforeSend: function(xhr){
+        xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
+		    $.blockUI({message:$('.loader')});
+	    },
       error: function(e, h, r){
         if (typeof error != 'function'){
           ToastrTool.error('ajax put error: ' + r);
@@ -53,9 +55,9 @@ var AjaxTool = {
           ToastrTool.success('ajax put success');
         }
       },
-	  complete: function(xhr, ts){
-	  	$.unblockUI();
-	  }
+  	  complete: function(xhr, ts){
+  	  	$.unblockUI();
+  	  }
     });
   },
   get: function(url, params, success, error){
@@ -64,14 +66,15 @@ var AjaxTool = {
       type: 'get',
       dataType: 'json',
       data: params != null ? JSON.stringify(params):null,
-	  beforeSend: function(xhr){
-		$.blockUI({message:$('.loader')});
-	  },
+	    beforeSend: function(xhr){
+        xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
+		    $.blockUI({message:$('.loader')});
+	    },
       error: error,
       success: success,
-	  complete: function(xhr, ts){
-	  	$.unblockUI();
-	  }
+  	  complete: function(xhr, ts){
+  	  	$.unblockUI();
+  	  }
     });
   },
   delete: function(url, params, success, error){
@@ -80,14 +83,15 @@ var AjaxTool = {
       type: 'DELETE',
       dataType: 'json',
       data: params != null ? JSON.stringify(params):null,
-	  beforeSend: function(xhr){
-		$.blockUI({message:$('.loader')});
-	  },
+	    beforeSend: function(xhr){
+        xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
+		    $.blockUI({message:$('.loader')});
+	    },
       error: error,
       success: success,
-	  complete: function(xhr, ts){
-	  	$.unblockUI();
-	  }
+  	  complete: function(xhr, ts){
+  	  	$.unblockUI();
+  	  }
     });
   }
 };

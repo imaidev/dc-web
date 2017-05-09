@@ -1,83 +1,86 @@
-var container_id = null;
-var node_id = null;
-var container_name = null;
 var ws_client = null;
+var vm = null;
 $(function(){
-  container_id = getParam('cid');
-  node_id = getParam('nid');
-  loadContainerInfo(container_id)
-  $('.container-action.container-action-start').click(function(){
-  	  ContainerAction.start(container_id, node_id);
+  var container_id = getParam('cid');
+  var node_id = getParam('nid');
+  
+  vm = new Vue({
+  	el: '#containerInfo',
+  	data: {
+  		cid: container_id,
+  		nid: node_id,
+  		container:{},
+  		logs: [],
+  	},
+  	methods: {
+  		loadContainer: function(){
+  			loadContainerInfo();
+  		},
+  		start: function(){
+  			ContainerAction.start(vm.cid, vm.nid, function(data, status){
+  				vm.loadContainer();
+  			});
+  		},
+  		stop: function(){
+  			ContainerAction.stop(vm.cid, vm.nid, function(data, status){
+  				vm.loadContainer();
+  			});
+  		},
+  		restart: function(){
+  			ContainerAction.restart(vm.cid, vm.nid, function(data, status){
+  				vm.loadContainer();
+  			});
+  		},
+  		trash: function(){
+  			ContainerAction.terminate(vm.cid, vm.nid, function(data, text){
+		    	window.location.href = list.html;
+		    });
+  		},
+  		loadLogs: function(){
+				if (ws_client != null) return;
+				ws_client = new WebSocket(DC_CONFIG.DC_API_WS_PATH+'/containers/'+vm.cid+'/logs?node-id='+vm.nid);
+				ws_client.onmessage = function (event) {  
+					vm.logs.push(event.data);
+					$('#divLogs').animate({scrollTop: $('#divLogs')[0].scrollHeight}, 10);//滑动到指定位置
+				};
+  		}
+  	}
   });
-  $('.container-action.container-action-stop').click(function(){
-    ContainerAction.stop(container_id, node_id);
-  });
-  $('.container-action.container-action-restart').click(function(){
-    ContainerAction.restart(container_id, node_id);
-  });
-  $('.container-action.container-action-terminate').click(function(){
-    ContainerAction.terminate(container_id, node_id, function(data, text){
-    	window.location.href = list.html;
-    });
-  });
+  vm.loadContainer();
 });
 
 function loadContainerInfo(){
-  ContainerAction.inspect(container_id, node_id, function(data, status){
-      container_name = data.Name.substring(1);
-      $('small[name="container_name"]').html(container_name);
-      $('#container_name').html(container_name.substring(container_name.indexOf('__')+2))
-      var state = data.State, config = data.Config, labels = config.Labels, sname = labels['com.docker.swarm.service.name'];
+  ContainerAction.inspect(vm.cid, vm.nid, function(data, status){
+      var cn = data.Name.substring(1), cn_short = cn.substring(cn.indexOf('__')+2)
+      , state = data.State, startAt = state.StartedAt.substring(0, 19).replace('T', ' ')
+      , config = data.Config, cmd = config.Cmd && !$.isEmptyObject(config.Cmd) ? config.Cmd : [], cmd_str = cmd.join(' ')
+      , labels = config.Labels, sn = labels['com.docker.swarm.service.name'];
       var ports = data.NetworkSettings.hasOwnProperty('Ports') ? data.NetworkSettings.Ports : null;
       var envs = config.hasOwnProperty('Env') ? config.Env : [];
-      var mounts = data.hasOwnProperty('Mounts')?data.Mounts:[];
-      $('#container_status').html(state.Status);
-      $('#container_status').addClass(state.Status);
-      $('#container_started').html(state.StartedAt);
-      $('#service-name').html(sname.substring(sname.indexOf('__')+2));
-      $('#image').html(config.Image);
-      $('#command').html(config.hasOwnProperty('Cmd')?(config.Cmd!=null?config.Cmd.join(' '):''):'');
-      $('#pid').html(state.Pid);
+      var mounts = data.hasOwnProperty('Mounts') ? data.Mounts: [];
       
-      if (ports != null){
+      vm.container = {name: cn, shortName: cn_short, image: config.Image
+      								, service: sn, serviceShortName: sn
+      								, isRunning: state.Running, status: state.Status, error: state.Error, pid: state.Pid, startedAt: startAt
+      								, cmd: cmd, cmdStr: cmd_str
+      								, ports: [], envs: [], volumes: []};
+      
+      if (ports){
 	      for (var key in ports){
-	      	  var target = ports[key]!=null?(ports[key][0].HostIp+':'+ports[key][0].HostPort):'';
-	          var tr = '<tr><td>'+target+'</td><td>'+key+'</td><tr>';
-	          $('#tblPorts tbody').append(tr);
+	      	var cps = key.split('/'), targetPort = cps[0], protocol = cps[1];
+	      	  var host_p = ports[key]!=null?(ports[key][0].HostIp+':'+ports[key][0].HostPort):'';
+	          vm.container.ports.push({TargetPort: targetPort, Protocol: protocol});
 	      }
       }
-      
       //Env
-      $('#tblEnvs tbody').html('');
       for (var i = 0; i < envs.length; i++) {
         var env = envs[i].split('=');
-        var tr = '<tr><td class="item-key">'+env[0]+'</td><td class="item-value">'+env[1]+'</td></tr>';
-        $('#tblEnvs tbody').append(tr);
+        vm.container.envs.push({key: env[0], value: env[1]});
       }
       //Volumes
-      $('#tblVolumes tbody').html('');
       for (var i = 0; i < mounts.length; i++) {
-        var env = mounts[i];
-        var tr = '<tr><td>'+mounts[i].Source+'</td><td >'+mounts[i].Destination+'</td><td>'+(mounts[i].RW?'Writable':'Readable')+'</td></tr>';
-        $('#tblVolumes tbody').append(tr);
+        vm.container.volumes.push({Target: mounts[i].Destination, Source: mounts[i].Source
+        													, RW: mounts[i].RW, RwTxt: mounts[i].RW? '读写':'只读'})
       }
   });
-}
-
-function loadLogs(){
-	if (ws_client != null) return;
-	ws_client = new WebSocket(DC_CONFIG.DC_API_WS_PATH+'/containers/'+container_id+'/logs?node-id='+node_id);
-	ws_client.onopen = function () {  
-        console.log('Info: ws connection opened.');  
-    };  
-      
-    ws_client.onmessage = function (event) {  
-    	setTimeout(function(){
-    		$('#divLogs').append('<p>'+event.data+'</p>');
-    	}, 1000);
-        
-    };  
-    ws_client.onclose = function (event) {  
-        console.log('Info: connection closed.');  
-    }; 
 }

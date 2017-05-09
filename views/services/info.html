@@ -6,47 +6,48 @@ title: Service
 <div class="row">
   <div class="col-md-12">
     <div class="page-header">
-      <h3>应用详情</h3>
+      <h3>服务详情</h3>
     </div>
     <div class="pull-right" style="margin-top: -50px;">
-      <div class="noUiSlider slider-step pull-left" id="slider-step" style="width: 200px;"></div>
+      <div class="noUiSlider slider-step auto-create pull-left" id="slider-step" style="width: 200px;"></div>
       <button class="btn btn-default btn-link pull-left" type="button" id="btnScale">Scale</button>
     </div>
   </div>
 </div>
 <div id="app-service-info">
-<div class="row block">
-	<div class="col-md-3">
-		<div class="row">
-			<h3 class="app-name col-md-12" v-text="service.shortName"></h3>
+	<div class="row block">
+		<div class="col-md-3">
+			<div class="row">
+				<h3 class="app-name col-md-12" v-model="service.name" v-text="service.name" style="overflow: hidden; text-overflow: ellipsis;"></h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12" v-model="service.updateAt" v-text="service.updateAt"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 service-action">
+					<a class="btn btn-success btn-start">启动</a>
+					<a class="btn btn-warning btn-stop">停止</a>
+					<a class="btn btn-danger btn-remove">删除</a>
+				</div>
+			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12" v-text="service.updateAt"></div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 service-action">
-				<a class="btn btn-success btn-start">启动</a>
-				<a class="btn btn-warning btn-stop">停止</a>
-				<a class="btn btn-danger btn-remove">删除</a>
+		
+		<div class="col-md-9">
+			<div class="row padding-10">
+				<div class="col-md-2">状态:</div>
+				<div v-bind:class="['col-md-2', 'service-info', service.status]"
+						 v-model="service.status" v-text="service.status"></div>
+				<div class="col-md-2">使用镜像:</div>
+				<div class="col-md-6" v-model="service.image" v-text="service.image" style="overflow: hidden; text-overflow: ellipsis;"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">访问地址:</div>
+				<div class="col-md-10">
+					<a v-bind:target="'_' + service.name" v-bind:href="service.url" v-text = "service.url"></a>
+				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div class="col-md-9">
-		<div class="row padding-10">
-			<div class="col-md-2">状态:</div>
-			<div v-bind:class="['col-md-2', 'service-info', service.status]" v-text="service.status"></div>
-			<div class="col-md-2">使用镜像:</div>
-			<div class="col-md-6" v-text="service.image"></div>
-		</div>
-		<div class="row">
-			<div class="col-md-2">访问地址:</div>
-			<div class="col-md-10">
-				<a v-bind:target="'_' + service.name" v-bind:href="'https://'+service.name+'.service.imaicloud.com'" v-text = "'https://' + service.name +'.service.imaicloud.com'"></a>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!-- 容器 start -->
 <div class="row block">
@@ -54,10 +55,10 @@ title: Service
     <h3>容器</h3>
   </div>
   <div class="col-md-10 service-info containers" id="containers">
-    <div class="col-md-6 item" v-for="container in containers" :data-id="container.Id" :data-nid="container.NodeID">
-				  <div class="col-md-6 item-title" :title="container.Name" v-text="container.Name.substring(container.Name.indexOf('__')+2)"></div>
-					<div :class="['col-md-2', 'item-state', container.State]" v-text="container.State"></div>
-					<div class="col-md-4 item-date" v-text="container.Status"></div>
+    <div class="col-md-6 item" v-for="container in containers"  v-model="container" :data-id="container.id" :data-nid="container.nid">
+				  <div class="col-md-6 item-title" v-model="container.shortName" :title="container.name" v-text="container.shortName"></div>
+					<div :class="['col-md-2', 'item-state', container.state]" v-model="container.state" v-text="container.state"></div>
+					<div class="col-md-4 item-date" v-model="container.status" v-text="container.status"></div>
 				</div>
   </div>
 </div>
@@ -166,5 +167,5 @@ title: Service
 </div>
 </div>
 
-<script type="text/javascript" src="/dc-web/skins/js/docker/api/service.js"></script>
+<script type="text/javascript" src="/skins/js/docker/api/service.js"></script>
 <script type="text/javascript" src="info.js"></script>
