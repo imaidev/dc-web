@@ -297,3 +297,6 @@ table.table-fixed tbody tr td{
   text-align: left;
   text-indent: 1em;
 }
+.navbar-nav .dropdown{
+  padding: 0px 10px 10px 10px;
+}
