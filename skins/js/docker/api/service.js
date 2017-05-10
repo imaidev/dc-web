@@ -93,14 +93,14 @@ var ServiceAction = (function(){
   };
   
   var info = function(sid, success_cal, error_cal){
-    AjaxTool.get(DC_CONFIG.DC_API_SERVICES_PATH+'/'+sid+'/info', {}, function(text, status){
-    	success_cal(text, status);
-    }, function(e, h, r){
-    	if (typeof error_cal == 'function'){
+    $.fn.dcGet(DC_CONFIG.DC_API_SERVICES_PATH+'/'+sid+'/info', function(data, status){
+      success_cal(text, status);
+    }, function(e,h,r){
+      if (typeof error_cal == 'function'){
           error_cal(text, status);
-	    } else {
-	    	ToastrTool.error('Get service info failure ', r);
-	    }
+      } else {
+        ToastrTool.error('Get service info failure ', r);
+      }
     });
   };
   
