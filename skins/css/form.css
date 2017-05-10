@@ -298,5 +298,5 @@ table.table-fixed tbody tr td{
   text-indent: 1em;
 }
 .navbar-nav .dropdown{
-  padding: 0px 10px 10px 10px;
+  padding: 0px 10px 10px 10px !important;
 }
