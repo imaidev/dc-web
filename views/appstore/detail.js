@@ -36,14 +36,14 @@ $(function(){
   	    });
       },
   	  install: function(){
-  	    vm.btnText = '安装中...';
+  	    vm.btnText = '正在部署...';
   	    AjaxTool.post(DC_CONFIG.DC_API_AUTHED_PATH+'/app/'+vm.app.id+'/install', null, function(data){
-  	      vm.btnText = '安装';
+  	      vm.btnText = '部署';
           if (data.success) {
-            ToastrTool.success('应用安装成功');
+            ToastrTool.success('部署应用成功');
             window.location.href='../myapp/list.html';
           } else {
-            ToastrTool.error('安装应用失败', data.message);
+            ToastrTool.error('部署应用失败', data.message);
           }
         });
   	  },
