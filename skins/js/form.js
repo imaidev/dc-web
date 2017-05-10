@@ -9,13 +9,13 @@ $(function(){
   if (itoken != null && itoken != ''){
     $.ajax({
     	type: 'get',
-    	url: '//dev.imaicloud.com/iam/v1/tenant/current',
+    	url: 'http://dev.imaicloud.com/iam/v1/tenant/current',
     	beforeSend: function(xhr){
     	  xhr.setRequestHeader('X-Auth-Token', itoken);
     	},
     	success: function(data, status){
     	  if (status=='success') {
-    	    var tnt = data.id.toLowerCase();
+          var tnt = data.id.toLowerCase();
           DC_CONFIG.DC_API_AUTHED_PATH = DC_CONFIG.DC_API_AUTHED_PATH.replace('{tenant}', tnt);
           DC_CONFIG.DC_API_WS_PATH = DC_CONFIG.DC_API_WS_PATH.replace('{tenant}', tnt);
           DC_CONFIG.DC_API_SERVICES_PATH = DC_CONFIG.DC_API_SERVICES_PATH.replace('{tenant}', tnt);
