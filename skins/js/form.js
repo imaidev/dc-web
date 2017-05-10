@@ -10,6 +10,8 @@ $(function(){
     $.ajax({
     	type: 'get',
     	url: '//dev.imaicloud.com/iam/v1/tenants/current',
+    	contentType: 'application/json',
+    	async: false,
     	beforeSend: function(xhr){
     	  xhr.setRequestHeader('X-Auth-Token', itoken);
     	},
