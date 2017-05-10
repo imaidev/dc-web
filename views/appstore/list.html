@@ -41,21 +41,21 @@ title: 应用商店
             </div>
           </div>
           <div class="panel-body appstore">
-            <div class="mt-element-card mt-element-overlay">
-                <div class="col-lg-4" v-for="app in apps" >
-                  <a @click="detail(app.id)">
-                  <div class="mt-card-item">
-                    <div class="mt-card-avatar mt-overlay-1">
-                      <img class="app-icon" v-bind:src="app.icon">
-                    </div>
-                    <div class="mt-card-content">
-                      <h3 class="mt-card-name app-title" v-text="app.name"></h3>
-                      <p class="mt-card-desc font-grey-mint app-judge"><span v-for=" star in app.stars" class="glyphicon glyphicon-star" style="display: inline-block;"></span></p>
-                      <p class="mt-card-desc font-grey-mint app-introduce" v-text="app.introduce"></p>
-                    </div>
+            <div class="col-lg-4" v-for="app in apps" >
+              <div class="mt-element-card mt-element-overlay">
+                <a @click="detail(app.id)">
+                <div class="mt-card-item">
+                  <div class="mt-card-avatar mt-overlay-1">
+                    <img class="app-icon" v-bind:src="app.icon">
                   </div>
-                  </a>
+                  <div class="mt-card-content">
+                    <h3 class="mt-card-name app-title" v-text="app.name"></h3>
+                    <p class="mt-card-desc font-grey-mint app-judge"><span v-for=" star in app.stars" class="glyphicon glyphicon-star" style="display: inline-block;"></span></p>
+                    <p class="mt-card-desc font-grey-mint app-introduce" v-text="app.introduce"></p>
+                  </div>
                 </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
