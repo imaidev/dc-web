@@ -9,7 +9,7 @@ $(function(){
   if (itoken != null && itoken != ''){
     $.ajax({
     	type: 'get',
-    	url: 'http://dev.imaicloud.com/iam/v1/tenant/current',
+    	url: '//dev.imaicloud.com/iam/v1/tenants/current',
     	beforeSend: function(xhr){
     	  xhr.setRequestHeader('X-Auth-Token', itoken);
     	},
