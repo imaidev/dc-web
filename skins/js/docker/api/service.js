@@ -94,10 +94,10 @@ var ServiceAction = (function(){
   
   var info = function(sid, success_cal, error_cal){
     $.fn.dcGet(DC_CONFIG.DC_API_SERVICES_PATH+'/'+sid+'/info', function(data, status){
-      success_cal(text, status);
+      success_cal(data, status);
     }, function(e,h,r){
       if (typeof error_cal == 'function'){
-          error_cal(text, status);
+          error_cal(data, status);
       } else {
         ToastrTool.error('Get service info failure ', r);
       }
