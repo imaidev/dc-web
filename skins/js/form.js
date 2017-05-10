@@ -5,32 +5,38 @@ $(function(){
   Vue.config.debug = true
   
   //解析cookie，获取用户信息
-  var itoken = $.fn.dcCookie('itoken');
-  if (itoken != null && itoken != ''){
-    $.ajax({
-    	type: 'get',
-    	url: '//dev.imaicloud.com/iam/v1/tenants/current',
-    	contentType: 'application/json',
-    	async: false,
-    	beforeSend: function(xhr){
-    	  xhr.setRequestHeader('X-Auth-Token', itoken);
-    	},
-    	success: function(data, status){
-    	  if (status=='success' && 'id' in data) {
-          var tnt = data.id.toLowerCase();
-          DC_CONFIG.DC_API_AUTHED_PATH = DC_CONFIG.DC_API_AUTHED_PATH.replace('{tenant}', tnt);
-          DC_CONFIG.DC_API_WS_PATH = DC_CONFIG.DC_API_WS_PATH.replace('{tenant}', tnt);
-          DC_CONFIG.DC_API_SERVICES_PATH = DC_CONFIG.DC_API_SERVICES_PATH.replace('{tenant}', tnt);
-          DC_CONFIG.DC_API_CONTAINERS_PATH = DC_CONFIG.DC_API_CONTAINERS_PATH.replace('{tenant}', tnt);
-          DC_CONFIG.DC_API_IMAGES_PATH = DC_CONFIG.DC_API_IMAGES_PATH.replace('{tenant}', tnt);
-          DC_CONFIG.DC_API_VOLUMES_PATH = DC_CONFIG.DC_API_VOLUMES_PATH.replace('{tenant}', tnt);
-          
-          var payload = $.fn.dcCookie('imaicloud_payload');
-          payload = $.base64.decode(payload);
-          USER_INFO = JSON.parse(payload);
-    	  }
-    	}
-    });
+  var tnt = $.fn.dcCookie('dctenant');
+  if (tnt == null || tnt == 'null') {
+    var itoken = $.fn.dcCookie('itoken');
+    if (itoken != null && itoken != ''){
+      $.ajax({
+        type: 'get',
+        url: '//dev.imaicloud.com/iam/v1/tenants/current',
+        contentType: 'application/json',
+        async: false,
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('X-Auth-Token', itoken);
+        },
+        success: function(data, status){
+          if (status=='success' && 'id' in data) {
+            var tnt = data.id.toLowerCase();
+            $.fn.dcCookie('dctenant', tnt);
+          }
+        }
+      });
+    }
+  }
+  DC_CONFIG.DC_API_AUTHED_PATH = DC_CONFIG.DC_API_AUTHED_PATH.replace('{tenant}', tnt);
+  DC_CONFIG.DC_API_WS_PATH = DC_CONFIG.DC_API_WS_PATH.replace('{tenant}', tnt);
+  DC_CONFIG.DC_API_SERVICES_PATH = DC_CONFIG.DC_API_SERVICES_PATH.replace('{tenant}', tnt);
+  DC_CONFIG.DC_API_CONTAINERS_PATH = DC_CONFIG.DC_API_CONTAINERS_PATH.replace('{tenant}', tnt);
+  DC_CONFIG.DC_API_IMAGES_PATH = DC_CONFIG.DC_API_IMAGES_PATH.replace('{tenant}', tnt);
+  DC_CONFIG.DC_API_VOLUMES_PATH = DC_CONFIG.DC_API_VOLUMES_PATH.replace('{tenant}', tnt);
+  
+  var payload = $.fn.dcCookie('imaicloud_payload');
+  if (payload != null && payload != '') {
+    payload = $.base64.decode(payload);
+    USER_INFO = JSON.parse(payload);
   }
   
   $('input[type="checkbox"].selector.selector-all').click(function(){
