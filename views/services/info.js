@@ -19,7 +19,7 @@ $(function(){
 				ServiceAction.info(service_id, function(data, status){
 			    if (status == 'success' && data instanceof Object){
 			    	var sn = data.Spec.Name
-			    	, ua = data.UpdateAt, url = 'https://'+sn+'.swarm.imaicloud.com'
+			    	, ua = data.UpdateAt, url = data.Spec.Labels['ingress.dnsname']
 			    	, image = data.Spec.TaskTemplate.ContainerSpec.Image;
 			      vm.service = {name: sn, updateAt: ua, url:url, image: image, status: 'running'};
 			      
