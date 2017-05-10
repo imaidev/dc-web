@@ -16,7 +16,7 @@ $(function(){
     	  xhr.setRequestHeader('X-Auth-Token', itoken);
     	},
     	success: function(data, status){
-    	  if (status=='success') {
+    	  if (status=='success' && 'id' in data) {
           var tnt = data.id.toLowerCase();
           DC_CONFIG.DC_API_AUTHED_PATH = DC_CONFIG.DC_API_AUTHED_PATH.replace('{tenant}', tnt);
           DC_CONFIG.DC_API_WS_PATH = DC_CONFIG.DC_API_WS_PATH.replace('{tenant}', tnt);
