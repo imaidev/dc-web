@@ -152,6 +152,6 @@ $(function(){
   });
   $(document).on('click', '#containers .item .item-title', function(){
     var cid = $(this).parent().attr('data-id'), nodeId = $(this).parent().attr('data-nid');
-    Router.open('/views/containers/info.html?cid='+cid+'&nid='+nodeId, '_blank');
+    Router.open(DC_CONFIG.WEBUI_CONTEXT + '/views/containers/info.html?cid='+cid+'&nid='+nodeId, '_blank');
   });
 });
