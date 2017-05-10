@@ -42,7 +42,7 @@ title: 应用商店
           </div>
           <div class="panel-body appstore">
             <div class="row">
-              <div class="col-md-4" v-for="app in apps" >
+              <div class="col-md-4 app-item" v-for="(app, index) in apps" >
                 <div class="mt-element-card mt-element-overlay">
                   <a @click="detail(app.id)">
                     <div class="mt-card-item">

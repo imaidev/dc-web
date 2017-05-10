@@ -266,6 +266,11 @@ table.table-fixed tbody tr td{
 }
 
 /**应用商店start**/
+.appstore .app-item{
+  height: 330px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 .appstore .mt-card-item{
   position: absolute !important;
 }
