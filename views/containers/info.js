@@ -51,7 +51,7 @@ $(function(){
 
 function loadContainerInfo(){
   ContainerAction.inspect(vm.cid, vm.nid, function(data, status){
-      var cn = data.Name.substring(1), cn_short = cn.substring(cn.indexOf('__')+2)
+      var cn = data.Name.substring(1), cn_short = cn
       , state = data.State, startAt = state.StartedAt.substring(0, 19).replace('T', ' ')
       , config = data.Config, cmd = config.Cmd && !$.isEmptyObject(config.Cmd) ? config.Cmd : [], cmd_str = cmd.join(' ')
       , labels = config.Labels, sn = labels['com.docker.swarm.service.name'];
