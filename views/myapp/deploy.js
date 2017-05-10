@@ -44,6 +44,7 @@ $(function(){
         $.fn.dcPost(DC_CONFIG.DC_API_AUTHED_PATH+'/app/deploy', vm.app, function(data){
           if (data.success) {
             ToastrTool.success('应用发布成功');
+            Router.href('list.html');
           } else {
             ToastrTool.error(data.message);
           }
