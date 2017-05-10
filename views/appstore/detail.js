@@ -4,7 +4,7 @@ $(function(){
   vm = new Vue({
   	el: '#app-detail',
   	data: {
-  	  btnText: '安装',
+  	  btnText: '部署',
   	  appId: '',
   	  app: {},
   	  judgements: [],
