@@ -20,6 +20,9 @@ $(function(){
 			  if($.trim(vm.imageName) == '') return;
 			  ImagesAction.inspect(vm.imageName, function(data){
 					if (data == null || typeof data != 'object' || (typeof data == 'object' && !data.hasOwnProperty('Id'))){
+					  if ('message' in data) {
+					    ToastrTool.warning(data.Message);
+					  }
 			      return;
 			    }
 					var config = data.Config, _vols = config.Volumes, entryPoint = config.Entrypoint
@@ -118,7 +121,7 @@ $(function(){
 		            }
 		           };
 		    ServiceAction.create(config, function(data, status){
-		        window.location.href = '../info.html?service_id='+data.ID;
+		        window.location.href = '../info.html?pk='+data.ID;
 		    });
 			}
 		}
