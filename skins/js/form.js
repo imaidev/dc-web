@@ -22,7 +22,7 @@ $(function(){
         },
         success: function(data, status){
           if (status=='success' && 'id' in data) {
-            var tnt = data.id.toLowerCase();
+            tnt = data.id.toLowerCase();
             //$.fn.dcCookie('dctenant', tnt);
           }
         }
