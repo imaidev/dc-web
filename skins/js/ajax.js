@@ -18,7 +18,9 @@
         
       },
       beforeSend: options.beforeSend ? options.beforeSend : function(xhr){
-        xhr.setRequestHeader('Set-Cookie', 'itoken='+$.cookie('itoken'));
+        xhr.setRequestHeader('Set-Cookie', 'itoken='+$.fn.dcCookie('itoken'));
+        xhr.setRequestHeader('X-Auth-Token', $.fn.dcCookie('itoken'));
+        
         if (options.loading) {
           $.blockUI({message: '<div class="load-container ajaxLoad"><div class="loader">Loading...</div></div>'});
         }
