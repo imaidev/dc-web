@@ -3,10 +3,10 @@ var USER_INFO = null;
 $(function(){
   //vue.js 调试模式
   Vue.config.debug = true
-  
+  /**
   $.fn.dcCookie('itoken', 'eyJhbGciOiJOR0lOWE1ENSIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3d3cuaW1haWNsb3VkLmNvbSIsImlzcyI6ImlhbS5pbnNwdXIuY29tIiwiZXhwIjoxNDk0NDYyNzUzOTQwLCJpYXQiOjE0OTQ0NjA5NTM5NDAsImFjY291bnRJZCI6InBYcGFtSGVWUXNtMkpDVDV2eTYydHciLCJlbWFpbCI6IjEyM0BxcS5jb20iLCJ1c2VybmFtZSI6IjEyM0BxcS5jb20iLCJncm91cCI6ImFkbWluIn0.JnfZ6qfJgHnWyPjOZ8SNQw');
   $.fn.dcCookie('dctenant','bxjko3rdqjevxxrxjxm63q');
-  
+  **/
   //解析cookie，获取用户信息
   var tnt = $.fn.dcCookie('dctenant');
   if (tnt == null || tnt == 'null') {
