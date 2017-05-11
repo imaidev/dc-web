@@ -8,8 +8,8 @@ $(function(){
   $.fn.dcCookie('dctenant','bxjko3rdqjevxxrxjxm63q');
   **/
   //解析cookie，获取用户信息
-  var tnt = $.fn.dcCookie('dctenant');
-  if (tnt == null || tnt == 'null') {
+  var tnt = $.fn.dcCookie('tenant');
+//if (tnt == null || tnt == 'null') {
     var itoken = $.fn.dcCookie('itoken');
     if (itoken != null && itoken != ''){
       $.ajax({
@@ -23,12 +23,12 @@ $(function(){
         success: function(data, status){
           if (status=='success' && 'id' in data) {
             var tnt = data.id.toLowerCase();
-            $.fn.dcCookie('dctenant', tnt);
+            //$.fn.dcCookie('dctenant', tnt);
           }
         }
       });
     }
-  }
+//}
   DC_CONFIG.DC_API_AUTHED_PATH = DC_CONFIG.DC_API_AUTHED_PATH.replace('{tenant}', tnt);
   DC_CONFIG.DC_API_WS_PATH = DC_CONFIG.DC_API_WS_PATH.replace('{tenant}', tnt);
   DC_CONFIG.DC_API_SERVICES_PATH = DC_CONFIG.DC_API_SERVICES_PATH.replace('{tenant}', tnt);
