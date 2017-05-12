@@ -14,11 +14,12 @@ $(function(){
 							var data = json[i];
 							var sn = data.Spec.Name, id = data.ID
 							, replicas = data.Spec.Mode.Replicated.Replicas
-							, url = 'https://'+sn+'.swarm.imaicloud.com'
 							, status = 'running', isRunning = status == 'running' ? true: false
 							, image = data.Spec.TaskTemplate.ContainerSpec.Image
 							, updatedAt = data.UpdatedAt.substring(0,19).replace('T', ' ')
-							vm.services.push({name: sn, id: id, replicas: replicas
+							, labels = data.Spec.Labels, app = 'com.dc.app.name' in labels ? labels['com.dc.app.name']:''
+							, dns = labels['ingress.dnsname'], url = '//'+dns;
+							vm.services.push({name: sn, id: id, replicas: replicas, app: app
 								              , url: url, status: status, isRunning: isRunning, image: image, updatedAt: updatedAt});
 						}	
 					}
