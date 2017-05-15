@@ -35,8 +35,8 @@ title:
             </td>
             <td v-model="app.createtime" v-text="app.deploytime"></td>
             <td>
-              <button class="btn btn-remove" @click="reinstall(app.id)"><span class="glyphicon glyphicon-refresh"></span></button>
-              <button class="btn btn-remove" @click="trash(app.id)"><span class="glyphicon glyphicon-trash"></span></button>
+              <button class="btn btn-success btn-remove" @click="reinstall(app.id)"><span class="glyphicon glyphicon-refresh"></span></button>
+              <button class="btn btn-danger btn-remove" @click="trash(app.id)"><span class="glyphicon glyphicon-trash"></span></button>
             </td>
           </tr>
         </tbody>
