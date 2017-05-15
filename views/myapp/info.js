@@ -60,6 +60,7 @@ $(function(){
         $.fn.dcAjax({
           url: DC_CONFIG.DC_API_AUTHED_PATH + '/app/'+myappid+'/reinstall',
           type: 'POST',
+          loading: true,
           success: function(data, status) {
             if (data.success) {
               ToastrTool.success('重新部署成功')
