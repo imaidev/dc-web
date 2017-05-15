@@ -13,6 +13,17 @@ $(function(){
           }
         });
 			},
+			reinstall: function(id){
+			  $.fn.dcAjax({
+			    url: DC_CONFIG.DC_API_AUTHED_PATH + '/app/'+id+'/reinstall',
+			    type: 'POST',
+			    success: function(data, status) {
+			      if (data.success) {
+			        Router.reload();
+			      }
+			    }
+			  });
+			},
 			trash: function(id){
         $.fn.dcAjax({
           url: DC_CONFIG.DC_API_AUTHED_PATH + '/app/'+id,

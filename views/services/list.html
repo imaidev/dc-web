@@ -31,7 +31,7 @@ title: 服务列表
             <li><a class="btn btn-action btn-trash" href="#" onclick="terminate()">删除</a></li>
           </ul>
         </div>
-        <button class="btn btn-default btn-info service-action service-action-create">新建</button>
+        <button class="btn btn-info service-action service-action-create">新建</button>
       </div>
     </div>
     <div class="panel-body">
@@ -86,10 +86,10 @@ title: 服务列表
 			        	</div>
 			        </div>
 			        <div class="col-md-1">
-		        	<a v-if="service.isRunning"><span class="glyphicon glyphicon-stop" title="停止" @click="stop"></span></a>
-		        	<a v-else><span class="glyphicon glyphicon-play" title="启动" @click="start"></span></a>
-		        	<a v-if="service.app==''"><span class="glyphicon glyphicon-trash" title="删除" @click="trash"></span></a>
-		        </div>
+  		        	<a v-if="service.isRunning"><span class="glyphicon glyphicon-stop" title="停止" @click="stop"></span></a>
+  		        	<a v-else><span class="glyphicon glyphicon-play" title="启动" @click="start"></span></a>
+  		        	<a v-if="service.app==''"><span class="glyphicon glyphicon-trash" title="删除" @click="trash"></span></a>
+  		        </div>
 		        </div>
 		      </li>
 			  </ul>
