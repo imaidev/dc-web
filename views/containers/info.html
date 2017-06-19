@@ -1,0 +1,170 @@
+---
+layout: home
+title: Container
+---
+<!-- page title -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h3>容器详情</h3>
+    </div>
+  </div>
+</div>
+<div id="containerInfo">
+	
+	<div class="row block">
+		<div class="col-md-4">
+			<div class="row">
+				<h3 class="container-name col-md-12" v-model="container.shortName" :title="container.name" v-text="container.shortName"></h3>
+			</div>
+			<div class="row">
+				<div v-bind:class="['col-md-12', 'container-info', 'container-status', container.status]" v-model="container.status" v-text="container.status"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<span class="glyphicon glyphicon-time"></span>
+					<span title="启动时间" v-model="container.startedAt" v-text="container.startedAt"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="row padding-10">
+				<div class="col-md-2 text-align-right">所属服务:</div>
+				<div class="col-md-8">
+					<span class="glyphicon glyphicon-th-large"></span>
+					<span v-model="container.serviceShortName" :title="container.service" v-text="container.serviceShortName"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 text-align-right">使用镜像:</div>
+				<div class="col-md-8" style="overflow: hidden;">
+					<span class="glyphicon glyphicon-tag"></span>
+					<span v-model="container.image" :title="container.image" v-text="container.image"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 text-align-right">主机进程:</div>
+				<div class="col-md-2">
+					<span v-model="container.pid" v-text="container.pid"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row block">
+		<div class="col-md-12 container-actions">
+	<button class="btn action start" :disabled="container.isRunning" @click="start" title="启动"><span class="glyphicon glyphicon-play large"></span></button>
+	<button class="btn action stop" :disabled="!container.isRunning" @click="stop" title="停止"><span class="glyphicon glyphicon-stop large"></span></button>
+	<button class="btn action restart" title="重启" @click="restart"><span class="glyphicon glyphicon-refresh large"></span></button>
+	<button class="btn action trash" title="删除" @click="trash"><span class="glyphicon glyphicon-trash large"></span></button>
+		</div>
+	</div>
+
+	<div class="row">
+	  <div class="col-md-12 tabbable-line">
+	    <ul class="nav nav-tabs">
+	      <li class="active"><a data-toggle="tab" href="#tab-general">配置</a></li>
+	      <li class=""><a data-toggle="tab" href="#tab-logs" @click="loadLogs">日志</a></li>
+	      <!-- <li class=""><a data-toggle="tab" href="#tab-monitor">监控</a></li> -->
+	    </ul>
+	    <div class="tab-content">
+	      <div class="tab-pane active" id="tab-general">
+	        <div class="row block">
+	        	<div class="col-md-12">
+	      		<!-- 启动时执行的Cmd命令 start -->
+	        		<div class="row">
+				        <h4 class="col-md-12">命令</h4>
+					      <div class="col-md-12 container-info cmd">
+					      	<pre v-model="container.cmdStr" v-text="container.cmdStr"></pre>
+					      </div>
+				      </div>
+		        <!-- 启动时执行的Cmd命令 end -->
+		        	<div class="row" v-model="container.error" v-if="container.error != ''">
+				        <h4 class="col-md-12">错误信息: </h4>
+					      <div class="col-md-12 container-info errors">
+					      	<pre class="error" v-text="container.error"></pre>
+					      </div>
+				      </div>
+		      	<!-- 端口 start -->
+		      		<div class="row margin-top-15">
+				        <h4 class="col-md-12">端口</h4>
+					      <div class="col-md-12 container-info ports">
+					        <table class="col-md-6 table light no-border">
+					        	<thead>
+					        		<tr>
+					        			<th style="width: 70%;">容器端口</th>
+					        			<th style="width: 30%;">协议</th>
+					        		</tr>
+					        	</thead>
+					         	<tbody>
+					         	 	<tr v-for="port in container.ports">
+					         	 		<td><span v-text="port.TargetPort" v-model="port.TargetPort"></span></td>
+					         	 		<td><span v-text="port.Protocol" v-model="port.Protocol"></span></td>
+					         	 	</tr>
+					         	</tbody>
+					        </table>
+					      </div>
+				      </div>
+		        <!-- 端口 end -->
+		      	<!-- 存储卷 start -->
+		      		<div class="row margin-top-15">
+				        <h4 class="col-md-12">Volume映射</h4>
+					      <div class="col-md-12 container-info volumes">
+					        <table class="table light no-border">
+					        	<thead>
+					        		<tr>
+					        			<th style="width: 40%;">容器Volume</th>
+					        			<th style="width: 40%;">主机Volume</th>
+					        			<th style="width: 20%;">权限</th>
+					        		</tr>
+					        	</thead>
+					         	<tbody>
+					         	 	<tr v-for="volume in container.volumes">
+					         	 		<td><span v-text="volume.Target" v-model="volume.Target"></span></td>
+					         	 		<td><span v-text="volume.Source" v-model="volume.Source"></span></td>
+					         	 		<td><span v-text="volume.RwTxt" v-model="volume.RwTxt"></span></td>
+					         	 	</tr>
+					         	</tbody>
+					        </table>
+					      </div>
+				      </div>
+		        <!-- 存储卷 end -->
+		      	<!-- 环境变量 start -->
+		      		<div class="row margin-top-15">
+				        <h4 class="col-md-12">环境变量</h4>
+					      <div class="col-md-12 container-info envs">
+					        <table class="table light no-border">
+					        	<thead>
+					        		<tr>
+					        			<th style="width: 20%;">键</th>
+					        			<th style="width: 80%;">值</th>
+					        		</tr>
+					        	</thead>
+					         	<tbody>
+					         	 	<tr v-for="env in container.envs">
+					         	 		<td><span v-text="env.key" v-model="env.key"></span></td>
+					         	 		<td><span v-text="env.value" v-model="env.value"></span></td>
+					         	 	</tr>
+					         	</tbody>
+					        </table>
+					      </div>
+				      </div>
+		        <!-- 环境变量 end -->
+		        </div>
+	  			</div>
+  			</div>
+	  		<!-- tab log -->
+	      <div class="tab-pane" id="tab-logs">
+	      	<div class="console" id="divLogs">
+	      		<p v-for="log in logs" v-model="log" v-text="log"></p>
+	        </div>
+	      </div>
+	  		<!-- tab monitor -->
+	      <!-- <div class="tab-pane" id="tab-monitor">
+	      </div>-->
+			</div>
+		</div>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+<script type="text/javascript" src="/dc-web/skins/js/docker/api/container.js"></script>
+<script type="text/javascript" src="info.js"></script>

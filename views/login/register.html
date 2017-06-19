@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>用户注册</title>
+		<link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+	  <script src="../../skins/js/jquery-1.11.3.min.js"></script>
+	  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	  <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+	  <script src="../../skins/js/env.js"></script>
+	  <script src="../../skins/js/ajax.js"></script>
+	  <style>
+	    html{
+	      width: 100%;
+	      height: 100%;
+	    }
+	    body{
+	      background: -ms-linear-gradient(top, #00C4FF, #fff);
+	      background: -moz-linear-gradient(top, #00C4FF, #fff);
+	      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00C4FF), color-stop(100%,#fff));
+	      background: -webkit-linear-gradient(top, #00C4FF 0%, #fff 100%);
+	      background-color: #fff;
+	    }
+	  </style>
+	</head>
+	<body>
+	  <header class="site-header">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">imai云开发者中心  </a>
+              <a class="navbar-brand" href="https://github.com/imaidev/imaidev.github.io/wiki">Wiki</a>
+            </div>
+          </div>
+        </nav>
+    </header>
+	  <section>
+	    <div class="register-area" style="margin-top: 100px; width: 500px; height: 280px; background-color: #FFFDFd; margin-left: auto;margin-right: auto; padding: 10px 10px 10px 20px; ">
+          <form class="form" action="">
+            <h3 style="text-align: center;">用户注册</h3>
+            <div class="form-group">
+              <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input type="text" placeholder="用户名" class="form-control" id="username" name="username" value=""  required autofocus> 
+               </div>
+            </div>
+            <div class="form-group">
+              <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input type="password" placeholder="密码" class="form-control" id="password" name="password" autocomplete="off" value=""  required> 
+               </div>
+            </div>
+            <div class="form-group">
+              <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input type="password" placeholder="重新输入密码" class="form-control" id="repassword" name="repassword" autocomplete="off" value=""  required> 
+               </div>
+            </div>
+            <div class="col-md-6">
+              <button id="btnRegister" class="btn btn-info btn-block" type="button" onkeypress="keypressed(event)" onclick="register();">提交</button>
+            </div>
+            <div class="col-md-6">
+              <button id="btnRegister" class="btn btn-default btn-block" type="reset" onkeypress="keypressed(event)" >重置</button>
+            </div>
+          </form>
+        </div>
+	  </section>
+	  <script type="text/javascript">
+	    var register = function() {
+	      var username = $('#username').val(), pwd = $('#password').val(), repwd = $('#repassword').val();
+	      if (username == '') {
+	        toastr['warning']('用户名不能为空');
+	        return ;
+	      }
+	      if (pwd == '') {
+	        toastr['warning']('密码不能为空');
+          return ;
+	      }
+        if (pwd != repwd) {
+          toastr['warning']('两次输入的密码不一致');
+          return ;
+        }
+        var data = {username: username, pwd: pwd, repwd: repwd};
+        $.fn.dcAjax({
+          url : DC_CONFIG.DC_API_HOST+'/user/register',
+          type: 'post',
+          withAuth: false,
+          data: data,
+          success: function(data, status) {
+            if (data.success) {
+              toastr['success']('用户注册成功');
+              setTimeout(function(){
+                window.location.href = 'login.html';
+              }, 1000);
+            } else {
+              toastr['warning'](data.message);
+            }
+          }
+          
+        });
+	    }
+	  </script>
+	</body>
+</html>
