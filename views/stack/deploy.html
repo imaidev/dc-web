@@ -1,0 +1,39 @@
+---
+layout: home
+title: 创建Stack
+---
+<link href="/dc-web/skins/plugins/codemirror/lib/codemirror.css" rel="stylesheet">
+<link href="/dc-web/skins/plugins/codemirror/theme/base16-dark.css" rel="stylesheet">
+<script src="/dc-web/skins/plugins/codemirror/codemirror.js"></script>
+<script src="/dc-web/skins/plugins/codemirror/mode/yaml/yaml.js"></script>
+
+<!-- page title -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h3>创建Stack</h3>
+    </div>
+  </div>
+</div>
+
+<div id="app-deploy" class="row">
+  <div class="col-md-12">
+    <form action="#" method="get" >
+      <div class="form-group">
+        <label class="control-label">Stack名称：</label>
+        <input placeholder="请输入应用名称" id="stackname" name="stackname" value=""/>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Docker compose YAML：</label>
+        <div class="yamlEditor" style="width: 800px; height: 300px; margin-left: 20px;">
+          <textarea id="sfEditor" name="stackfile"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-info" @click="submitStack()">发布</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript" src="deploy.js"></script>

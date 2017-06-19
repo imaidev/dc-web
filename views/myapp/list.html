@@ -1,0 +1,47 @@
+---
+layout: home
+title: 
+---
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h3>我的应用</h3>
+    </div>
+  </div>
+</div>
+<div class="row" id="app-list">
+  <div class="col-md-12 panel">
+    <div class="panel-body">
+      <table class="table light">
+        <thead>
+          <th style="width: 30%;">应用名称</th>
+          <th style="width: 40%;">URL</th>
+          <th style="width: 20%;">创建时间</th>
+          <th style="width: 10%;"></th>
+        </thead>
+        <tbody>
+          <tr v-for="(app, index) in applist" v-model="app" v-bind:data-id="app.id">
+            <td>
+              <a @click="info(app.id)">
+              <img :src="app.icon" style="width: 50px; height: 50px; float: left;" />
+              <h4 v-text="app.app_name" style="float: left;"></h4>
+              </a>
+            </td>
+            <td>
+              <div v-for="service in app.services">
+                <a target="_blank" :href="service.link_href" v-text="service.link_href"></a>
+              </div>
+            </td>
+            <td v-model="app.createtime" v-text="app.deploytime"></td>
+            <td>
+              <button class="btn btn-success btn-remove" @click="reinstall(app.id)"><span class="glyphicon glyphicon-refresh"></span></button>
+              <button class="btn btn-danger btn-remove" @click="trash(app.id)"><span class="glyphicon glyphicon-trash"></span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="list.js"></script>

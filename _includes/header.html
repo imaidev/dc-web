@@ -1,0 +1,24 @@
+<header class="site-header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Docker Cloud</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav pull-left">
+            <li>
+              <a href="{{ site.data.env.RESOURCE_SERVER}}/views/appstore/list.html" style="color: #FFFFFF; font-weight: 600;">应用商店</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav pull-right">
+            <li>
+              <a href="{{ site.data.env.RESOURCE_SERVER}}/views/myapp/list.html">我的应用</a>
+            </li>
+            <li id="userInfo" class="dropdown dropdown-user">
+              <script src="//dev.imaicloud.com/iam-web/skins/js/embed.js"></script>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+</header>

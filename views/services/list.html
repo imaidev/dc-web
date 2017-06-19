@@ -1,0 +1,100 @@
+---
+layout: home
+title: 服务列表
+---
+
+<div class="row">
+<div class="col-md-12">
+  <div class="page-header">
+    <h3>服务列表
+    </h3>
+  </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-12 panel">
+    <div class="panel-heading">
+      <div class="captions">
+        <div class="checkbox">
+          <label>
+            <input class="form-control selector selector-all" type="checkbox">全选
+          </label>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="btn-group">
+          <button class="btn btn-default dropdown-toggle" id="actions" type="button" data-toggle="dropdown">操作
+            <span class="caret"></span></button>
+          <ul class="dropdown-menu actions" role="menu" aria-labelledby="actions">
+            <li><a class="btn btn-action btn-stop" href="#" onclick="stop()">停止</a></li>
+            <li><a class="btn btn-action btn-start" href="#" onclick="start()">启动</a></li>
+            <li><a class="btn btn-action btn-trash" href="#" onclick="terminate()">删除</a></li>
+          </ul>
+        </div>
+        <button class="btn btn-info service-action service-action-create">新建</button>
+      </div>
+    </div>
+    <div class="panel-body">
+			  <ul id="serviceList">
+		      <li v-for="service in services" v-model="service" v-bind:data-sid="service.id">
+		      	<div class="row">
+			        <div class="col-md-1 check-col">
+			        	<div class="checkbox">
+			        		<label>
+			        			<input class="form-control selector" type="checkbox" name="selector"/>
+		        			</label>
+		        		</div>
+			        </div>
+			        <div class="col-md-10">
+			        	<div class="col-md-3 service-info">
+			        		<div class="row">
+			        			<div class="col-md-12 service-name" v-model="service.name" v-bind:title="service.name" 
+			        					 v-text="service.name" @click="info"></div>
+		        			</div>
+		        			<div class="row">
+		        				<div class="col-md-12">
+		        					<span class="badge" title="容器" v-model="service.replicas" v-text="service.replicas"></span>
+		        				</div>
+	        				</div>
+		        			<div class="row">
+		        				<div class="col-md-12">
+		        					<a title="访问URL" v-model="service.url" v-bind:target="'_' + service.name" 
+		        														 v-bind:href="service.url" v-text = "service.url"></a>
+		        				</div>
+	        				</div>
+			        	</div>
+			        	<div class="col-md-1">
+			        		<div :class="['col-md-12', 'service-status', service.status]" name="s_stats" 
+			        					v-model="service.status" v-text="service.status"></div>
+			        	</div>
+                <div class="col-md-2">
+                  <div class="col-md-12 service-stack" title="所属应用">
+                    <span v-model="service.app" v-text="service.app"></span>
+                  </div>
+                </div>
+			        	<div class="col-md-3">
+			        		<div class="col-md-12 service-image" title="使用镜像" style="overflow: hidden;">
+			        			<span class="glyphicon glyphicon-tag"></span>
+			        			<span v-model="service.image" v-text="service.image"></span>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-3">
+			        		<div class="col-md-12 service-ut" title="更新时间">
+			        			<span class="glyphicon glyphicon-time"></span>
+			        			<span v-model="service.updatedAt" v-text="service.updatedAt"></span>
+			        		</div>
+			        	</div>
+			        </div>
+			        <div class="col-md-1">
+  		        	<a v-if="service.isRunning"><span class="glyphicon glyphicon-stop" title="停止" @click="stop"></span></a>
+  		        	<a v-else><span class="glyphicon glyphicon-play" title="启动" @click="start"></span></a>
+  		        	<a v-if="service.app==''"><span class="glyphicon glyphicon-trash" title="删除" @click="trash"></span></a>
+  		        </div>
+		        </div>
+		      </li>
+			  </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="{{ site.data.env.RESOURCE_SERVER}}/skins/js/docker/api/service.js"></script>
+<script type="text/javascript" src="list.js"></script>

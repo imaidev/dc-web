@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+    {% include head.html %}
+  </head>
+  <body class="bs-docs-home">
+    {% include header.html %}
+
+    <div class="row-fluid">
+      <div class="col-md-3">
+        <!-- Docs master nav -->
+        {% include left-nav.html %}
+      </div>
+      <div class="col-md-9">
+        <!-- Page content of course! -->
+        {{ content }}
+      </div>
+    </div>
+
+    {% include footer.html %}
+  </body>
+</html>
